@@ -36,10 +36,12 @@ const SalesOrderEditOrShowFooter: FC<IProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const handleSuccess = (message: string) => {
-    toast.success(message);
+  const handleSuccess = (message: string | null) => {
+    if (message) {
+      toast.success(message);
+      ordersRefetch();
+    }
     handleClose();
-    ordersRefetch();
   };
 
   const { mutate, isPending } = useMutation({
@@ -58,10 +60,11 @@ const SalesOrderEditOrShowFooter: FC<IProps> = ({
       mutationFn: orderApi.closeOrder,
       onSuccess: () => handleSuccess("Buyurtma yopildi"),
     });
-  const { mutate: salesCancelMutate } = useMutation({
-    mutationFn: orderApi.cancelSales,
-    onSuccess: () => handleSuccess("Sotuv bekor qilindi"),
-  });
+  const { mutate: salesCancelMutate, isPending: salesCancelPending } =
+    useMutation({
+      mutationFn: orderApi.cancelSales,
+      onSuccess: () => handleSuccess("Sotuv bekor qilindi"),
+    });
 
   const addCart = () => {
     if (!showOrder) return;
@@ -72,30 +75,6 @@ const SalesOrderEditOrShowFooter: FC<IProps> = ({
     if (salesType === "order") {
       ordersCancelMutate(showOrder!.docEntry);
     } else {
-      // const data = {
-      //   cardCode: showOrder?.cardCode,
-      //   docDueDate: showOrder?.docDueDate,
-      //   docDate: showOrder?.docDate,
-      //   docCurrency: showOrder?.docCurrency,
-      //   salesPersonCode: showOrder?.slpCode,
-      //   comments: showOrder?.comments,
-      //   docRate: showOrder?.docRate,
-      //   documentLines: showOrder?.documentLines.map((item) => ({
-      //     lineNum: item.lineNum,
-      //     baseEntry: showOrder.docEntry,
-      //     baseLine: item.lineNum,
-      //     itemCode: item.itemCode,
-      //     quantity: item.quantity,
-      //     unitPrice: item.price,
-      //     currency: item.price,
-      //     warehouseCode: item.warehouseCode,
-      //     documentLinesBinAllocations: item.binLocations.map((bin) => ({
-      //       binAbsEntry: bin.absEntry,
-      //       quantity: bin.quantity,
-      //     })),
-      //   })),
-      // };
-
       salesCancelMutate(buildSalesCancelPayload(showOrder as IOrder));
     }
   };
@@ -124,6 +103,8 @@ const SalesOrderEditOrShowFooter: FC<IProps> = ({
         onCloseOrder={() => ordersCloseMutate(showOrder!.docEntry)}
         onCancelOrder={onCancelOrder}
         salesType={salesType}
+        handleSuccess={handleSuccess}
+        salesCancelPending={salesCancelPending}
       />
     </div>
   );

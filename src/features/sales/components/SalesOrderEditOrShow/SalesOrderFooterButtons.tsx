@@ -4,6 +4,8 @@ import type { FormModeType } from "@/types";
 import type { IOrder } from "@/types/order";
 import { useTranslation } from "react-i18next";
 import type { SalesFormType } from "../../types";
+import PaymentModalForm from "@/features/purchases/components/PaymentModalForm";
+import { useState } from "react";
 
 interface IProps {
   mode: FormModeType;
@@ -12,11 +14,13 @@ interface IProps {
   ordersClosePending: boolean;
   ordersCancelPending: boolean;
   orderEditLoading: boolean;
+  salesCancelPending: boolean;
   onEdit: () => void;
   onAddCart: () => void;
   onCloseOrder: () => void;
   onCancelOrder: () => void;
   salesType: SalesFormType;
+  handleSuccess: (a: string | null) => void;
 }
 
 const SalesOrderFooterButtons = ({
@@ -25,14 +29,17 @@ const SalesOrderFooterButtons = ({
   isPending,
   ordersClosePending,
   ordersCancelPending,
+  salesCancelPending,
   orderEditLoading,
   onEdit,
   onAddCart,
   onCloseOrder,
   onCancelOrder,
+  handleSuccess,
   salesType,
 }: IProps) => {
   const { t } = useTranslation();
+  const [paymentModalFormOpen, setPaymentModalFormOpen] = useState(false);
 
   if (showOrder?.docStatus !== DocStatus.OPEN) return null;
 
@@ -77,7 +84,7 @@ const SalesOrderFooterButtons = ({
       {salesType === "sales" && showOrder.docStatus === DocStatus.OPEN && (
         <Button
           type="primary"
-          onClick={onAddCart}
+          onClick={() => setPaymentModalFormOpen(true)}
           loading={isPending}
           disabled={isPending}
         >
@@ -88,12 +95,19 @@ const SalesOrderFooterButtons = ({
         <Button
           type="default"
           onClick={onCancelOrder}
-          loading={ordersCancelPending}
-          disabled={ordersCancelPending}
+          loading={ordersCancelPending || salesCancelPending}
+          disabled={ordersCancelPending || salesCancelPending}
         >
           {t("general.cancel")}
         </Button>
       )}
+      <PaymentModalForm
+        open={paymentModalFormOpen}
+        setOpen={setPaymentModalFormOpen}
+        setReload={() => null}
+        showOrder={showOrder}
+        paymentSuccessShowFn={handleSuccess}
+      />
     </>
   );
 };

@@ -46,7 +46,6 @@ const SalesOrderEditOrShow: FC<IProps> = ({
   useOrderFormSync({ formInstance, showOrder });
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["edit-sales-order"],
     mutationFn: (data: any) =>
       API.patchSalesOrders(data, showOrder?.docEntry as number),
     onSuccess: () => {
@@ -60,6 +59,8 @@ const SalesOrderEditOrShow: FC<IProps> = ({
     const payload = mapFormValuesToPayload(values, showOrder!);
     mutate(payload);
   };
+
+  console.log("showOrder123", showOrder);
 
   return (
     <Modal

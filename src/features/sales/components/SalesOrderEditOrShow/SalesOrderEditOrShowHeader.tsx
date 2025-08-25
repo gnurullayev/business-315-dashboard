@@ -44,7 +44,7 @@ const SalesOrderEditOrShowHeader: FC<IProps> = ({ salesType }) => {
       <div className="form_item">
         <Form.Item
           name="docTotal"
-          label={t("sales.docTotalAmount")}
+          label={t("sales.totalAmountOfDocument")}
           layout="vertical"
         >
           <Input placeholder={t("general.choose")} disabled />
@@ -54,7 +54,7 @@ const SalesOrderEditOrShowHeader: FC<IProps> = ({ salesType }) => {
         <div className="form_item">
           <Form.Item
             name="paidSum"
-            label={t("sales.Umumiy to'langan summa")}
+            label={t("sales.totalPaidAmount")}
             layout="vertical"
           >
             <Input placeholder={t("general.choose")} disabled />

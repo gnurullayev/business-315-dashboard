@@ -6,7 +6,7 @@ import "./styles.scss";
 import { ErrorBoundary } from "@/components";
 
 const defaultDate = {
-  group: undefined,
+  groupCode: undefined,
   cardName: undefined,
 };
 

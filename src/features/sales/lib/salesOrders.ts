@@ -149,7 +149,7 @@ export const buildSalesCancelPayload = (order: IOrder) => ({
     itemCode: item.itemCode,
     quantity: item.quantity,
     unitPrice: item.price,
-    currency: item.price,
+    currency: item.currency,
     warehouseCode: item.warehouseCode,
     documentLinesBinAllocations: item.binLocations.map((bin) => ({
       binAbsEntry: bin.absEntry,
@@ -163,4 +163,5 @@ export const orderApi = {
   cancelOrder: (id: number) => API.postSalesOrdersCancel(id),
   closeOrder: (id: number) => API.postSalesOrdersClose(id),
   cancelSales: (data: any) => API.postSalesCancel(data),
+  incomingPaymentBatch: (data: any) => API.postIncomingPaymentBatch(data),
 };

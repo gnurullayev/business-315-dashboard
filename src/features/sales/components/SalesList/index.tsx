@@ -123,7 +123,9 @@ const SalesList: FC<IProps> = ({ filter, salesType }) => {
   const { data, refetch, isLoading } = useQuery({
     queryKey: ["sales-list", filter, page],
     queryFn: async () =>
-      await API.getSalesList({ ...filter, skip: page, pageSize: 10 }),
+      await API[salesType === "sales" ? "getSalesList" : "getSalesCreditNotes"](
+        { ...filter, skip: page, pageSize: 10 }
+      ),
   });
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { Form, Modal } from "antd";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { API } from "@/services/api";
 import SalesOrderHeader from "./SalesOrderHeader";
@@ -8,7 +8,7 @@ import SalesOrderFooter from "./SalesOrderFooter";
 import { mapSalesOrderPayload } from "../../lib/salesOrders";
 import "./styles.scss";
 import type { SalesFormType } from "../../types";
-import type { Dispatch, FC, SetStateAction } from "react";
+import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import { ErrorBoundary } from "@/components";
 interface IProps {
@@ -25,6 +25,10 @@ const SalesOrderCreate: FC<IProps> = ({
   ordersRefetch,
 }) => {
   const [formInstance] = Form.useForm();
+  const { data: docRate } = useQuery({
+    queryKey: ["getCurrencyRate"],
+    queryFn: async () => await API.getCurrencyRate(),
+  });
   const { t } = useTranslation();
   const {
     mutate,
@@ -56,6 +60,10 @@ const SalesOrderCreate: FC<IProps> = ({
       },
     });
 
+  useEffect(() => {
+    formInstance.setFieldValue("dollarRate", docRate);
+  }, [docRate, formInstance]);
+
   const onFinished = (values: any) => {
     const payload = mapSalesOrderPayload(values, salesType);
 
@@ -74,7 +82,7 @@ const SalesOrderCreate: FC<IProps> = ({
         form={formInstance}
         className="order_create_form"
         onFinish={onFinished}
-        initialValues={{ items: [{}], dollarRate: "12000" }}
+        initialValues={{ items: [{}], dollarRate: docRate }}
       >
         <ErrorBoundary>
           <SalesOrderHeader />

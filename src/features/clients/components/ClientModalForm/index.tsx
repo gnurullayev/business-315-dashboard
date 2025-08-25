@@ -17,8 +17,8 @@ interface IProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   setReload: Dispatch<SetStateAction<number>>;
   setShowClient?: Dispatch<SetStateAction<IClient | null>>;
-  mode?: FormModeType;
   showClient?: IClient | null;
+  mode?: FormModeType;
   clientPageType?: ClientPageType;
 }
 
@@ -34,6 +34,8 @@ const ClientModalForm: FC<IProps> = ({
   const [formInstance] = Form.useForm();
   const { t } = useTranslation();
   useClientFormSync({ formInstance, showClient });
+
+  console.log("showClient", showClient);
 
   const handleClose = () => {
     formInstance.resetFields();
@@ -93,7 +95,7 @@ const ClientModalForm: FC<IProps> = ({
           </Form.Item>
 
           <Form.Item
-            name="cardForeignName"
+            name="cardFName"
             label={t("clients.responsiblePerson")}
             layout="vertical"
             rules={[{ required: true, message: t("general.enterInformation") }]}
@@ -106,7 +108,7 @@ const ClientModalForm: FC<IProps> = ({
           </Form.Item>
 
           <Form.Item
-            name="federalTaxID"
+            name="licTradNum"
             label={t("clients.inn")}
             layout="vertical"
             rules={[{ required: true, message: t("general.enterInformation") }]}

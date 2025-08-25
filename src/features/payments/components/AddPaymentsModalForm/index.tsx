@@ -114,7 +114,10 @@ const AddPaymentsModalForm: FC<IProps> = ({
               layout="vertical"
               rules={[]}
             >
-              <DatePicker placeholder={t("general.choose")} />
+              <DatePicker
+                placeholder={t("general.choose")}
+                format="MM/DD/YYYY"
+              />
             </Form.Item>
           </div>
 

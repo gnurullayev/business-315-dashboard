@@ -140,7 +140,11 @@ const SalesOrderEditOrShowTable = ({ mode, formInstance }: any) => {
                   index,
                   "data",
                 ]);
-                return <span>{data?.u_BinCode}</span>;
+                const binCode = data?.binLocations?.length
+                  ? data?.binLocations[0]?.binCode
+                  : data?.u_BinCode;
+
+                return <span>{binCode}</span>;
               },
             },
             {

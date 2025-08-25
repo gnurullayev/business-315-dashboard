@@ -65,6 +65,11 @@ export const API = {
   getCurrencyRate: () =>
     axiosInstance.get("currencies/get-currency-rate").then((res) => res.data),
   getWarehouses: () => axiosInstance.get("warehouses").then((res) => res.data),
+  getBusinessPartnersInfo: (params?: any) =>
+    axiosInstance
+      .get("businesspartners/info", { params })
+      .then((res) => res.data),
+  //businesspartners/info?cardCode=10012&startDate=2025-08-01&endDate=2025-08-26
 
   //
   //SALES
@@ -90,6 +95,8 @@ export const API = {
       .then((res) => res.data.data),
   postSalesCancel: (data: any) =>
     axiosInstance.post("sales/credit-notes", data).then((res) => res.data.data),
+  getSalesCreditNotes: (params?: any) =>
+    axiosInstance.get("sales/credit-notes", { params }).then((res) => res.data),
 
   //ITEMS
   getInventoryItems: (params: any) =>
@@ -102,4 +109,11 @@ export const API = {
       .then((res) => res.data),
   getOnHandItems: (params: any) =>
     axiosInstance.get("items/onhand-items", { params }).then((res) => res.data),
+
+  //PAYMENT
+  postIncomingPaymentBatch: (data: any) =>
+    axiosInstance
+      .post("payments/incoming-payment/batch", data)
+      .then((res) => res.data.data),
+  //
 };

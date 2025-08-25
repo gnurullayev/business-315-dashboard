@@ -1,56 +1,105 @@
-import { Button, DatePicker, Form, Input, Modal } from "antd";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-toastify";
-import { API } from "@/services/api";
-
-import "./styles.scss";
-import { type Dispatch, type FC, type SetStateAction } from "react";
+import { Button, Form, Modal } from "antd";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { UniversalSelect } from "@/components";
-import TextArea from "antd/es/input/TextArea";
+import type { IOrder } from "@/types/order";
+import type { User } from "@/types/user";
+import "./styles.scss";
+import { usePaymentMutation } from "../../hooks/usePaymentMutation";
+import { buildPayments, calcTotalAmount } from "../../lib/idex";
+import { PaymentFormItems } from "./PaymentFormItems";
+import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
+import { API } from "@/services/api";
 
 interface IProps {
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  setReload: Dispatch<SetStateAction<number>>;
+  setOpen: (val: boolean) => void;
+  setReload: (cb: (prev: number) => number) => void;
+  showOrder?: IOrder;
+  paymentSuccessShowFn?: (a: string | null) => void;
 }
 
-const PaymentModalForm: FC<IProps> = ({ open, setOpen, setReload }) => {
+const PaymentModalForm = ({
+  open,
+  setOpen,
+  setReload,
+  showOrder,
+  paymentSuccessShowFn,
+}: IProps) => {
   const [formInstance] = Form.useForm();
   const { t } = useTranslation();
+  const userInfo: User = useSelector((store: any) => store.userData.user);
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["post-business-partners"],
-    mutationFn: (data: any) => API.postBusinessPartners(data),
-    onSuccess: () => {
-      toast.success("Client yaratildi");
-      formInstance.resetFields();
-      setReload((prev) => prev + 1);
-      setOpen(false);
-    },
-    onError: (err: any) => {
-      if (err?.response?.data?.message) {
-        toast.error(`Xatolik yuz berdi: ${err?.response?.data?.message}`);
-      } else {
-        toast.error(`Xatolik yuz berdi: ${err.message}`);
-      }
-    },
+  const { data: docRate } = useQuery({
+    queryKey: ["get-currency-rate"],
+    queryFn: async () => await API.getCurrencyRate(),
+  });
+  const { mutate, isPending } = usePaymentMutation({
+    showOrder,
+    paymentSuccessShowFn,
+    formInstance,
+    setReload,
+    setOpen,
   });
 
   const onFinished = (values: any) => {
-    mutate(values);
+    const payments = buildPayments(values, userInfo);
+    if (payments.length === 0) {
+      toast.error("To'lov summasini kiriting");
+      return;
+    }
+
+    if (showOrder) {
+      mutate({
+        cardCode: showOrder.cardCode,
+        docDate: values.date,
+        docEntry: showOrder.docEntry,
+        docRate: values.docRate,
+        payments,
+      });
+    }
+  };
+
+  const onValuesChange = (values: any) => {
+    const USD = Number(formInstance.getFieldValue("USD"));
+    const UZS = Number(formInstance.getFieldValue("UZS"));
+    const card = Number(formInstance.getFieldValue("card"));
+    const docRate = Number(formInstance.getFieldValue("docRate"));
+
+    const keys = Object.keys(values);
+    if (["USD", "UZS", "card"].includes(keys[0])) {
+      const totalAmount = calcTotalAmount(USD, UZS, card, docRate);
+      formInstance.setFieldValue("totalAmount", totalAmount);
+    }
   };
 
   const handleClose = () => {
     setOpen(false);
     formInstance.resetFields();
+    if (paymentSuccessShowFn) paymentSuccessShowFn(null);
   };
+
+  console.log("showOrder", showOrder);
+  useEffect(() => {
+    if (showOrder) {
+      formInstance.setFieldsValue({
+        docRate: docRate ?? 0,
+        u_CashAccount: userInfo.u_CashAccount,
+        u_CashAccountUZS: userInfo.u_CashAccountUZS,
+        u_CardAccount: userInfo.u_CardAccount,
+        totalAmount: 0,
+      });
+    }
+  }, [showOrder, docRate, userInfo, formInstance]);
 
   return (
     <Modal
       title={
         <h3>
-          <b>Hujjat raqami: 49</b>
+          <b>
+            {t("general.docNumber")}: {showOrder?.docNum}
+          </b>
         </h3>
       }
       open={open}
@@ -62,139 +111,16 @@ const PaymentModalForm: FC<IProps> = ({ open, setOpen, setReload }) => {
         form={formInstance}
         className="payment-modal-form"
         onFinish={onFinished}
-        initialValues={{ items: [{}] }}
+        onValuesChange={onValuesChange}
         layout="vertical"
       >
         <div className="payment-modal-form__inner">
-          <div className="payment-modal-form__item_box">
-            <Form.Item
-              name="dollarRate"
-              label={t("client.dollarRate")}
-              layout="vertical"
-              rules={[
-                { required: true, message: t("general.enterInformation") },
-                { pattern: /^[0-9]+$/, message: t("general.enterOnlyNumber") },
-              ]}
-            >
-              <Input placeholder={""} />
-            </Form.Item>
-            <Form.Item
-              name={"date"}
-              label={t("general.Sana")}
-              layout="vertical"
-              rules={[]}
-            >
-              <DatePicker placeholder={t("general.choose")} />
-            </Form.Item>
-          </div>
-
-          <div className="payment-modal-form__item_box">
-            <Form.Item
-              name="USD"
-              label={t("purchases.usd")}
-              layout="vertical"
-              rules={[
-                { required: true, message: t("general.enterInformation") },
-                { pattern: /^[0-9]+$/, message: t("general.enterOnlyNumber") },
-              ]}
-            >
-              <Input placeholder={"Mijoz ismini kiriting"} />
-            </Form.Item>
-
-            <UniversalSelect
-              name="cash"
-              label={t("purchases.cash")}
-              layout="vertical"
-              request={API.getBusinessPartnersGroups}
-              resDataKey="data"
-              valueKey="code"
-              labelKey="name"
-              disabled={true}
-              rules={[
-                { required: true, message: t("general.enterInformation") },
-              ]}
-            />
-          </div>
-
-          <div className="payment-modal-form__item_box">
-            <Form.Item
-              name="UZS"
-              label={t("purchases.uzs")}
-              layout="vertical"
-              rules={[
-                { required: true, message: t("general.enterInformation") },
-                { pattern: /^[0-9]+$/, message: t("general.enterOnlyNumber") },
-              ]}
-            >
-              <Input placeholder={""} />
-            </Form.Item>
-
-            <UniversalSelect
-              name="cash"
-              label={t("purchases.cash")}
-              layout="vertical"
-              request={API.getBusinessPartnersGroups}
-              resDataKey="data"
-              valueKey="code"
-              labelKey="name"
-              disabled={true}
-              rules={[]}
-            />
-          </div>
-
-          <div className="payment-modal-form__item_box">
-            <Form.Item
-              name="click"
-              label={t("purchases.click")}
-              layout="vertical"
-              rules={[
-                { required: true, message: t("general.enterInformation") },
-                { pattern: /^[0-9]+$/, message: t("general.enterOnlyNumber") },
-              ]}
-            >
-              <Input placeholder={""} />
-            </Form.Item>
-
-            <UniversalSelect
-              name="cash"
-              label={t("purchases.cash")}
-              layout="vertical"
-              request={API.getBusinessPartnersGroups}
-              resDataKey="data"
-              valueKey="code"
-              labelKey="name"
-              disabled={true}
-              rules={[]}
-            />
-          </div>
-
-          <Form.Item
-            name="totalAmount"
-            label={t("general.totalAmount")}
-            layout="vertical"
-            rules={[
-              { required: true, message: t("general.enterInformation") },
-              { pattern: /^[0-9]+$/, message: t("general.enterOnlyNumber") },
-            ]}
-          >
-            <Input placeholder={""} disabled />
-          </Form.Item>
-
-          <div className="payment-modal-form__comment">
-            <Form.Item
-              name={"comment"}
-              label={t("general.comment")}
-              layout="vertical"
-            >
-              <TextArea rows={4} />
-            </Form.Item>
-          </div>
+          <PaymentFormItems />
 
           <div className="payment-modal-form__footer">
             <Button type="default" onClick={handleClose}>
               {t("general.back")}
             </Button>
-
             <Button
               type="primary"
               htmlType="submit"

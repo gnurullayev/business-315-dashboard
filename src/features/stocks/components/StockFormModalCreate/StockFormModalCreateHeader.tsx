@@ -69,6 +69,7 @@ const StockFormModalCreateHeader: FC<IProps> = ({ mode }) => {
           <DatePicker
             placeholder={t("general.choose")}
             disabled={mode !== "CREATE"}
+            format="MM/DD/YYYY"
           />
         </Form.Item>
       </div>

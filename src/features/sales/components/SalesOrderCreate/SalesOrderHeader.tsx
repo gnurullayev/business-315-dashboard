@@ -71,7 +71,7 @@ const SalesOrderHeader: FC<IProps> = () => {
           layout="vertical"
           rules={[{ required: true, message: t("general.enterInformation") }]}
         >
-          <DatePicker placeholder={t("general.choose")} />
+          <DatePicker placeholder={t("general.choose")} format="MM/DD/YYYY" />
         </Form.Item>
       </div>
 
@@ -82,7 +82,7 @@ const SalesOrderHeader: FC<IProps> = () => {
           layout="vertical"
           rules={[{ required: true, message: t("general.enterInformation") }]}
         >
-          <DatePicker placeholder={t("general.choose")} />
+          <DatePicker placeholder={t("general.choose")} format="MM/DD/YYYY" />
         </Form.Item>
       </div>
 

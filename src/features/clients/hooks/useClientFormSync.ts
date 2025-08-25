@@ -13,7 +13,7 @@ export function useClientFormSync({
       formInstance.setFieldsValue({
         cardName: showClient.cardName,
         cardFName: showClient.cardFName,
-        groupCode: showClient.groupCode,
+        groupCode: Number(showClient.groupCode),
         slpCode: showClient.slpCode,
         Cellular: showClient.Cellular,
         licTradNum: showClient.licTradNum,

@@ -1,39 +1,82 @@
 import { DatePicker, Form, Input, Modal } from "antd";
 import "./styles.scss";
-import { type Dispatch, type FC, type SetStateAction } from "react";
+import {
+  useEffect,
+  useState,
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { ErrorBoundary } from "@/components";
 import ActiveReconciliationModalTable from "./ActiveReconciliationModalTable";
+import type { IClient } from "@/types/client";
+import { useQuery } from "@tanstack/react-query";
+import { API } from "@/services/api";
+import dayjs from "dayjs";
 
 interface IProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  showClient?: IClient | null;
 }
 
-const ActiveReconciliationModal: FC<IProps> = ({ open, setOpen }) => {
+const initialData = {
+  startDate: dayjs().startOf("month").format("YYYY-MM-DD"),
+  endDate: dayjs().format("YYYY-MM-DD"),
+};
+
+const ActiveReconciliationModal: FC<IProps> = ({
+  open,
+  setOpen,
+  showClient,
+}) => {
   const [formInstance] = Form.useForm();
   const { t } = useTranslation();
-  // useClientFormSync({ formInstance });
+  const [filter, setFilter] = useState(initialData);
 
   const handleClose = () => {
     formInstance.resetFields();
-
+    setFilter(initialData);
     setOpen(false);
   };
 
-  // const { mutate, isPending } = useMutation({
-  //   mutationKey: ["post-business-partners"],
-  //   mutationFn: (data: any) => API.postBusinessPartners(data),
-  //   onSuccess: () => {
-  //     toast.success("Client yaratildi");
-  //     setReload((prev) => prev + 1);
-  //     handleClose();
-  //   },
-  // });
+  const { refetch, data, isLoading } = useQuery({
+    queryKey: ["getBusinessPartnersInfo", filter, showClient?.cardCode],
+    queryFn: async () => {
+      if (showClient?.cardCode) {
+        return await API.getBusinessPartnersInfo({
+          cardCode: showClient.cardCode,
+          ...filter,
+        });
+      }
+      return null;
+    },
+    enabled: !!showClient?.cardCode,
+  });
 
-  // const onFinished = (values: any) => {
-  //   mutate(values);
-  // };
+  const onValuesChange = (values: any) => {
+    console.log(values);
+    const key = Object.keys(values)[0];
+
+    setFilter({ ...filter, [key]: dayjs(values[key]).format("YYYY-MM-DD") });
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [filter]);
+
+  useEffect(() => {
+    if (data) {
+      formInstance.setFieldsValue({
+        cardName: data.cardName,
+        balance: data.balance,
+        balanceFirstDayOfPeriod: data.balanceFirstDayOfPeriod,
+        startDate: dayjs(filter.startDate),
+        endDate: dayjs(filter.endDate),
+      });
+    }
+  }, [formInstance, data]);
 
   return (
     <Modal
@@ -47,12 +90,13 @@ const ActiveReconciliationModal: FC<IProps> = ({ open, setOpen }) => {
       onCancel={handleClose}
       width="80%"
       className="active_reconciliation_modal"
+      loading={isLoading}
     >
       <Form
         form={formInstance}
         className="active_reconciliation_modal__form"
-        // onFinish={onFinished}
-        initialValues={{ items: [{}] }}
+        onValuesChange={onValuesChange}
+        initialValues={{}}
         layout="vertical"
       >
         <div className="active_reconciliation_modal__form_top">
@@ -66,26 +110,32 @@ const ActiveReconciliationModal: FC<IProps> = ({ open, setOpen }) => {
 
           <div className="active_reconciliation_modal__form_top_box">
             <Form.Item
-              name="term"
+              name="startDate"
               label={t("general.startDate")}
               layout="vertical"
             >
-              <DatePicker placeholder={t("general.choose")} />
+              <DatePicker
+                placeholder={t("general.choose")}
+                format="MM/DD/YYYY"
+              />
             </Form.Item>
 
             <Form.Item
-              name="term"
+              name="endDate"
               label={t("general.endDate")}
               layout="vertical"
             >
-              <DatePicker placeholder={t("general.choose")} />
+              <DatePicker
+                placeholder={t("general.choose")}
+                format="MM/DD/YYYY"
+              />
             </Form.Item>
           </div>
         </div>
 
         <div className="active_reconciliation_modal__form_bottom">
           <Form.Item
-            name="currentLiability"
+            name="balance"
             label={t("clients.currentLiability")}
             layout="vertical"
           >
@@ -93,7 +143,7 @@ const ActiveReconciliationModal: FC<IProps> = ({ open, setOpen }) => {
           </Form.Item>
 
           <Form.Item
-            name="openingBalance"
+            name="balanceFirstDayOfPeriod"
             label={t("clients.openingBalance")}
             layout="vertical"
           >
@@ -103,7 +153,11 @@ const ActiveReconciliationModal: FC<IProps> = ({ open, setOpen }) => {
       </Form>
 
       <ErrorBoundary>
-        <ActiveReconciliationModalTable />
+        <ActiveReconciliationModalTable
+          data={
+            data?.businessPartnerInfoLines ? data?.businessPartnerInfoLines : []
+          }
+        />
       </ErrorBoundary>
     </Modal>
   );

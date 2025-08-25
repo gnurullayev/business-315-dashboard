@@ -6,7 +6,7 @@ import ClientsList from "../clients/components/ClientsList";
 import type { IClientsFilter } from "../clients/types";
 
 const defaultDate = {
-  group: undefined,
+  groupCode: undefined,
   cardName: undefined,
 };
 

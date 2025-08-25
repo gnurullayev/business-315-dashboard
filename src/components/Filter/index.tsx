@@ -85,7 +85,10 @@ const Filter: React.FC<FilterProps> = ({
                     required={field.required}
                     rules={field.rules}
                   >
-                    <DatePicker placeholder={field.placeholder} />
+                    <DatePicker
+                      format="MM/DD/YYYY"
+                      placeholder={field.placeholder}
+                    />
                   </Form.Item>
                 );
 

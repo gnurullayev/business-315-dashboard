@@ -32,16 +32,20 @@ const ClientsList: FC<IProps> = ({ filter, clientPageType }) => {
       dataIndex: "cardName",
       key: "cardName",
     },
-    {
-      title: t("clients.responsiblePerson"),
-      dataIndex: "cardFName",
-      key: "cardFName",
-    },
-    {
-      title: t("clients.inn"),
-      dataIndex: "licTradNum",
-      key: "licTradNum",
-    },
+    ...(clientPageType === "client-info"
+      ? [
+          {
+            title: t("clients.responsiblePerson"),
+            dataIndex: "cardFName",
+            key: "cardFName",
+          },
+          {
+            title: t("clients.inn"),
+            dataIndex: "licTradNum",
+            key: "licTradNum",
+          },
+        ]
+      : []),
     {
       title: t("clients.phoneNumber"),
       dataIndex: "Cellular",
@@ -55,8 +59,8 @@ const ClientsList: FC<IProps> = ({ filter, clientPageType }) => {
     },
     {
       title: t("clients.customerGroup"),
-      dataIndex: "groupCode",
-      key: "groupCode",
+      dataIndex: "groupName",
+      key: "groupName",
     },
     {
       title: t("general.actions"),
@@ -90,9 +94,14 @@ const ClientsList: FC<IProps> = ({ filter, clientPageType }) => {
   ];
 
   const { data, refetch, isLoading } = useQuery({
-    queryKey: ["sales-orders", filter, page],
+    queryKey: ["getBusinessPartners", filter, page],
     queryFn: async () =>
-      await API.getSalesOrders({ ...filter, skip: page, pageSize: 10 }),
+      await API.getBusinessPartners({
+        ...filter,
+        cardType: "C",
+        skip: page,
+        pageSize: 10,
+      }),
   });
 
   useEffect(() => {
@@ -133,6 +142,7 @@ const ClientsList: FC<IProps> = ({ filter, clientPageType }) => {
         <ActiveReconciliationModal
           open={activeReconciliationModalOpen}
           setOpen={setActiveReconciliationModalOpen}
+          showClient={showClient}
         />
       </ErrorBoundary>
     </div>
