@@ -1,0 +1,12 @@
+.client_modal_form {
+  &__item_box,
+  &__footer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  &__footer {
+    margin-top: 10px;
+  }
+}

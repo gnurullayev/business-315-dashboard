@@ -1,0 +1,20 @@
+.payment-modal-form {
+  &__item_box,
+  &__footer {
+    display: grid;
+    grid-template-columns: 38% 56%;
+    gap: 6%;
+  }
+  &__footer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &__footer {
+    margin-top: 10px;
+  }
+
+  .ant-input-number,
+  .ant-picker {
+    width: 100%;
+  }
+}

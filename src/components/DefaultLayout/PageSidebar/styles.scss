@@ -1,0 +1,31 @@
+@use "../../../assets/scss/variables" as *;
+
+.sidebar {
+  height: calc(100vh - 64px);
+  width: auto !important;
+  max-width: 16rem !important;
+  min-width: 16rem !important;
+  background-color: $content-menu-background-color;
+  color: $menu-text-color;
+
+  .ant-menu {
+    background-color: $menu-active-text-color;
+    color: $menu-text-color;
+
+    .ant-menu-item-selected {
+      background-color: $menu-active-bg-color;
+      color: $menu-active-text-color;
+    }
+
+    .ant-menu-item:hover {
+      background-color: $base-color-hover;
+      color: $menu-bg-color;
+    }
+  }
+}
+
+.sidebar.ant-layout-sider-collapsed {
+  width: auto !important;
+  max-width: 80px !important;
+  min-width: 80px !important;
+}

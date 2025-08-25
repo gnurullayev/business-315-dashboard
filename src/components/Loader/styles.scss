@@ -1,0 +1,28 @@
+.ui-loader {
+  position: fixed;
+  overflow-y: hidden;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100svh;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.in-page-loader {
+    position: initial;
+    width: initial;
+    height: initial;
+  }
+
+  @media (max-width: 699px) {
+    height: calc(100svh - 64px);
+  }
+
+  .content {
+    width: 70px;
+    opacity: 50%;
+  }
+}

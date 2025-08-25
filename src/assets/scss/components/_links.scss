@@ -1,0 +1,10 @@
+@use "../variables" as *;
+@use "../variables_app" as *;
+
+a {
+  color: $link-color;
+
+  &:hover {
+    color: $link-color-hover;
+  }
+}

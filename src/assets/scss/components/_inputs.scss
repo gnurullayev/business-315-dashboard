@@ -1,0 +1,95 @@
+@use "../variables" as *;
+@use "../variables_app" as *;
+
+.ant-input {
+  height: $input-height;
+  padding: $input-padding;
+  border-radius: $input-border-radius;
+  height: 32px;
+
+  &-search {
+    width: $input-width-search;
+  }
+
+  &-affix-wrapper {
+    padding: $input-padding;
+  }
+}
+
+.mily-new-design {
+  .ant-form-item {
+    margin-bottom: 16px;
+
+    &.login-form-phone-input {
+      .ant-form-item {
+        margin-bottom: 0px;
+      }
+    }
+  }
+  .ant-select-single .ant-select-selector .ant-select-selection-item,
+  .ant-select-single .ant-select-selector .ant-select-selection-placeholder {
+    line-height: $app-input-height;
+  }
+  .form-dark-labels {
+    .ant-form-item-label {
+      & > label {
+        color: $app-input-label-color-dark;
+      }
+    }
+  }
+  .form-light-labels {
+    .ant-form-item-label {
+      & > label {
+        color: $app-input-label-color-light;
+      }
+    }
+  }
+  .ant-input-textarea {
+    .ant-input {
+      height: 100%;
+      border-radius: $app-input-border-radius;
+      box-shadow: $app-card-box-shadow-sm;
+      border-color: $app-border-color;
+    }
+  }
+  .ant-form-item-with-help {
+    .ant-input {
+      border-color: #ff4d4f;
+    }
+  }
+  .ant-picker {
+    border-radius: $app-input-border-radius;
+    box-shadow: $app-card-box-shadow-sm;
+    border-color: $app-border-color;
+  }
+}
+.ant-form-item {
+  .ant-form-item-label > label {
+    .fa-question-circle {
+      margin-left: 10px;
+    }
+  }
+}
+.ant-picker-cell-in-range {
+  background: #f9f5ff;
+}
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+  background: #7159bd;
+  color: #fff;
+}
+.ant-picker-cell-selected .ant-picker-cell-inner {
+  color: #fff;
+}
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border-color: #7159bd;
+}
+.ant-picker-panel-container {
+  border-radius: 16px;
+}
+
+.ant-select {
+  width: 100% !important;
+  min-width: max-content;
+}

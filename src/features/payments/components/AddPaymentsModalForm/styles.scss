@@ -1,0 +1,22 @@
+.add_payments_form {
+  &__item_box,
+  &__footer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6%;
+  }
+  &__item_box_first {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  &__footer {
+    margin-top: 10px;
+  }
+
+  .ant-input-number,
+  .ant-picker {
+    width: 100%;
+  }
+}

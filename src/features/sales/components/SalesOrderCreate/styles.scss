@@ -1,0 +1,54 @@
+.order_create_form {
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  .ant-col {
+    min-height: auto;
+  }
+  &__card_code_box {
+    display: flex;
+    align-items: center;
+  }
+  &__card_code {
+    min-width: 200px;
+  }
+  &__card_code_add {
+    position: relative;
+    top: 4px;
+    min-width: 40px;
+  }
+  &__sales_manager {
+    width: 200px !important;
+  }
+
+  &__table {
+    padding: 10px 0 20px 0;
+
+    .ant-table-cell {
+      align-items: center;
+
+      .ant-form-item {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__comment {
+    min-height: 150px;
+    max-width: 400px;
+    margin-left: auto;
+  }
+
+  &__footer {
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+  }
+}

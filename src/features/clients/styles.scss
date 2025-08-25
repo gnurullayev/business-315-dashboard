@@ -1,0 +1,8 @@
+@use "@/assets/scss/variables" as *;
+@use "@/assets/scss/variables_app" as *;
+
+.clients_info {
+  background-color: $box-background-color;
+  padding: 20px 10px;
+  border-radius: $app-card-border-radius;
+}

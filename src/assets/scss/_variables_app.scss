@@ -1,0 +1,63 @@
+// Theme
+$app-theme-color: var(--themeColor, #7159bd);
+$app-link-color: $app-theme-color;
+$app-link-color-hover: $app-theme-color;
+$app-text-color: #000000d9;
+$app-main-color: #7159bd;
+
+// Borders
+$app-border-color: #eaecf0;
+
+// Cards
+$app-card-box-shadow-sm: 0px 1px 2px rgba(16, 24, 40, 0.05);
+$app-card-border-radius: 16px;
+$app-card-padding-sm: 16px;
+
+// Form Inputs
+$app-input-height: 36px;
+$app-input-label-color-light: #9d9d9d;
+$app-input-label-color-dark: #262626;
+$app-input-border-radius: 10px;
+
+// Buttons
+$app-button-height: 36px;
+$app-button-padding: 8px 15px;
+$app-button-padding-big: 8px 25px;
+$app-icon-button-height: 40px;
+$app-icon-button-width: 40px;
+
+$app-button-color: #6941c6;
+$app-button-color-hover: #53389e;
+$app-button-color-focus: #6941c6;
+$app-button-bg: #f9f5ff;
+$app-button-bg-hovered: #f4ebff;
+$app-button-border-color: #f9f5ff;
+$app-button-disabled-opacity: 0.25;
+$app-button-border-radius: 30px;
+
+$app-button-color-primary: #ffffff;
+$app-button-bg-primary: $app-theme-color;
+$app-button-bg-primary-hovered: #563ba4;
+$app-button-border-primary: $app-theme-color;
+
+$app-button-color-primary-danger: #d92d20;
+$app-button-color-danger: #b42318;
+$app-button-color-danger-hovered: #912018;
+$app-button-border-danger: #fef3f2;
+$app-button-bg-danger: #fef3f2;
+$app-button-bg-danger-hovered: #fee4e2;
+$app-button-color-danger-disabled: #fda29b;
+$app-button-border-danger-disabled: #fffbfa;
+$app-button-bg-danger-disabled: #fffbfa;
+
+$app-button-bg-secondary-disabled: #fcfaff;
+$app-button-color-secondary-disabled: #d6bbfb;
+
+$app-button-color-grey: #344054;
+$app-button-color-grey-hovered: #1d2939;
+$app-button-border-grey: #d0d5dd;
+$app-button-bg-grey: #ffffff;
+$app-button-bg-grey-hovered: #f9fafb;
+$app-button-color-grey-disabled: #344054;
+$app-button-border-grey-disabled: #d0d5dd;
+$app-button-bg-grey-disabled: #ffffff;

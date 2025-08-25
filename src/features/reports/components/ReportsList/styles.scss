@@ -1,0 +1,14 @@
+@use "@/assets/scss/variables" as *;
+
+.reports_list {
+  .ant-table-thead {
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+
+    .ant-table-cell {
+      background-color: $background-color;
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,50 @@
+@use "@/assets/scss/variables" as *;
+
+.dashboard_statistics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 25px;
+
+  &__card {
+    padding: 20px;
+    border-radius: 20px;
+    background-color: $background-color;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    border-radius: 16px;
+    color: #fff;
+  }
+
+  &__icon__blue {
+    background-color: $button-bg-01;
+  }
+  &__icon__primary {
+    background-color: $button-color-hover;
+  }
+
+  &__total {
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: 700;
+  }
+
+  &__total__blue {
+    color: $button-bg-01;
+  }
+
+  &__total__primary {
+    color: $button-color-hover;
+  }
+}

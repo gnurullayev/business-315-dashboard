@@ -1,0 +1,36 @@
+@use "@/assets/scss/variables" as *;
+
+.layout {
+  .layout_inner {
+    display: flex;
+    height: calc(100vh - 64px);
+    padding: 0 20px 0 0;
+  }
+
+  .layout_main {
+    padding: 0 20px 0 20px;
+    overflow: auto;
+    width: 100%;
+  }
+
+  .page_layout {
+    padding-top: 20px;
+
+    .ant-table-thead {
+      position: sticky;
+      top: 0px;
+      z-index: 2;
+
+      .ant-table-cell {
+        background-color: $background-color;
+        text-align: center;
+      }
+    }
+
+    .ant-table-tbody {
+      .ant-table-cell {
+        text-align: center;
+      }
+    }
+  }
+}

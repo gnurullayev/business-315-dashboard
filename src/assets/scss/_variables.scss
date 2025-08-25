@@ -1,0 +1,97 @@
+// Base
+$base-border-radius: 6px;
+
+// Base colors
+$base-color: #2f224b;
+$base-color-active: #7633b9;
+$base-color-hover: #f7f7ff;
+
+// Theme colors
+$theme-color: var(--themeColor, #7159bd);
+
+// Menu
+$menu-text-color: var(--navTextColor, #b7b1bf);
+$menu-active-text-color: var(--navActiveTextColor, #ffffff);
+$menu-bg-color: var(--navBackgroundColor, #2f224b);
+$menu-active-bg-color: var(--navActiveBackgroundColor, #7633b9);
+
+// Buttons
+$button-height-big: 36px;
+
+//// Colors
+$button-color: $theme-color;
+$button-color-hover: #53389e;
+$button-color-focus: $button-color-hover;
+
+$button-color-primary: #ffffff;
+$button-color-primary-disabled: rgba(0, 0, 0, 0.25);
+
+$button-color-danger: #ff4d4f;
+$button-color-danger-hovered: #912018;
+
+$button-color-student: $theme-color;
+$button-color-student-primary: white;
+
+//// Backgrounds
+$button-bg-01: #19a9ce;
+$button-bg-02: #00a8ce;
+$button-bg-primary: $theme-color;
+$button-bg-primary-hover: $theme-color;
+$button-bg-primary-focus: $button-bg-primary-hover;
+$button-bg-primary-disabled: rgb(245, 245, 245);
+
+//// Misc
+$button-padding: 8px;
+$button-padding-big: 12px;
+
+$button-border-color-hover: $theme-color;
+$button-border-color-focus: $button-border-color-hover;
+$button-border-color-primary: $button-bg-primary;
+$button-border-color-primary-disabled: rgb(217, 217, 217);
+$button-border-color-student: $theme-color;
+
+$button-border-width-student: 2px;
+
+$button-border-radius: $base-border-radius;
+
+$button-font-weight: 500;
+$button-font-weight-student: bold;
+
+// Inputs
+$input-height: 36px;
+$input-width-search: 150px;
+
+$input-padding: 0 12px;
+$input-border-hover: $theme-color;
+$input-border-focus: $input-border-hover;
+$input-border-radius: $base-border-radius;
+
+$input-box-shadow-focus: 0 0 0 2px rgba($input-border-focus, 0.2);
+
+// Text colors
+$text-color-05: #ffffff;
+
+// Link colors
+$link-color: $theme-color;
+$link-color-hover: $theme-color;
+$link-color-focus: $link-color-hover;
+
+// Layout parameters
+$header-height: 64px;
+$sidebar-width: 220px;
+$collapsed-sidebar-width: 80px;
+
+// Modals
+$modal-border-radius: $base-border-radius;
+
+// Cards
+$card-border-radius: $base-border-radius;
+
+// Tabs
+$tab-border-radius: $base-border-radius $base-border-radius 0 0;
+
+// Content Menu
+$content-menu-background-color: #ffffff;
+
+$background-color: #f7f7f8;
+$box-background-color: #fff;

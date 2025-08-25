@@ -1,0 +1,101 @@
+@use "../variables" as *;
+@use "../variables_app" as *;
+
+.modal-w-small {
+  width: 100%;
+  max-width: 328px;
+}
+
+.ant-modal-content {
+  overflow: auto;
+  border-radius: $modal-border-radius;
+}
+
+.mily-new-design {
+  .ant-modal-body {
+    padding: 24px;
+  }
+
+  .ant-modal-confirm-body-wrapper {
+    padding: 24px;
+  }
+
+  .ant-modal-content {
+    border-radius: 16px;
+    padding: 0px;
+  }
+
+  .ant-modal-footer {
+    border-top: none;
+    padding: 0px 24px 24px;
+  }
+
+  .ant-modal-header {
+    padding: 24px 24px 0px;
+    border-bottom: none;
+
+    .ant-modal-title {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 22px;
+      color: $app-text-color;
+    }
+
+    @media (min-width: 700px) {
+      .ant-modal-title {
+        font-size: 18px;
+      }
+    }
+  }
+
+  &.padding-sm {
+    .ant-modal-body {
+      padding: 24px 16px;
+    }
+  }
+}
+
+.mily-admin-modal {
+  .ant-modal-body {
+    padding: 24px;
+  }
+
+  .ant-modal-content {
+    padding: 0;
+    border-radius: 8px;
+  }
+
+  .ant-modal-footer {
+    border-top: none;
+    padding: 0px 24px 24px;
+  }
+
+  .ant-modal-header {
+    padding: 18px 24px 15px;
+    border-bottom: none;
+    background-color: $app-main-color;
+
+    .ant-modal-title {
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 22px;
+      color: #fff;
+    }
+
+    @media (min-width: 700px) {
+      .ant-modal-title {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .ant-modal-close {
+    color: #fff;
+  }
+}
+
+.ant-picker-ranges {
+  .ant-btn {
+    min-width: auto;
+  }
+}

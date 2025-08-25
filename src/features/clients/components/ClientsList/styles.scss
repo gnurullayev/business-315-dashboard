@@ -1,0 +1,12 @@
+.clients_list {
+  .custom_pagination {
+    display: flex;
+    justify-content: end;
+  }
+
+  .client_list_actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}

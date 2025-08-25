@@ -1,0 +1,19 @@
+@use "../variables" as *;
+@use "../variables_app" as *;
+
+.ant-input-number {
+  width: 80px;
+  border-radius: $input-border-radius;
+  &:focus {
+    border-color: $theme-color !important;
+  }
+  &:hover {
+    border-color: $theme-color;
+  }
+  &-affix-wrapper {
+    padding: $input-padding;
+  }
+  .ant-input-number-handler-wrap {
+    border-radius: 8px;
+  }
+}

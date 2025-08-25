@@ -1,0 +1,67 @@
+@use "../variables" as *;
+@use "../variables_app" as *;
+
+.ant-tabs-tab {
+  border-radius: $tab-border-radius !important;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+  color: #667085 !important;
+
+  &:hover {
+    font-weight: 600 !important;
+  }
+}
+
+.ant-tabs-top:not(.ant-tabs-card)
+  > .ant-tabs-nav
+  > .ant-tabs-nav-wrap
+  > .ant-tabs-nav-list {
+  .ant-tabs-tab {
+    &:hover {
+      font-weight: 600 !important;
+
+      &:after {
+        position: absolute;
+        content: "";
+        width: 100%;
+        bottom: 0;
+        border-bottom: 2px solid #667085;
+      }
+    }
+  }
+}
+
+.ant-tabs-left:not(.ant-tabs-card)
+  > .ant-tabs-nav
+  > .ant-tabs-nav-wrap
+  > .ant-tabs-nav-list {
+  .ant-tabs-tab {
+    &:hover {
+      font-weight: 600 !important;
+
+      &:after {
+        position: absolute;
+        content: "";
+        height: 100%;
+        right: 0;
+        border-right: 2px solid #667085;
+      }
+    }
+  }
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: $theme-color !important;
+  font-weight: 600 !important;
+}
+
+.ant-tabs-tab-btn {
+  &:active {
+    color: $app-main-color !important;
+  }
+}
+
+.ant-tabs-ink-bar {
+  background: $theme-color !important;
+}

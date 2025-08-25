@@ -1,0 +1,536 @@
+@use "../variables" as *;
+@use "../variables_app" as *;
+
+.ant-btn {
+  padding: $button-padding;
+  border-radius: $button-border-radius;
+  line-height: 1;
+  min-width: 100px;
+
+  &.ant-input-search-button {
+    min-width: auto;
+  }
+
+  color: $button-color;
+  border-color: $button-color;
+  font-weight: $button-font-weight;
+
+  &:hover {
+    background-color: $button-color-hover !important;
+    color: $button-color-hover;
+    border-color: $button-border-color-hover;
+  }
+
+  &:focus {
+    color: $button-color-focus;
+    border-color: $button-border-color-focus;
+  }
+
+  &.ant-btn-lg {
+    height: $button-height-big;
+    padding: 0 $button-padding-big;
+    font-size: 14px;
+  }
+
+  &.ant-btn-link {
+    color: $app-link-color;
+    padding-left: 0;
+    padding-right: 0;
+    border-color: transparent;
+    background: none;
+    transition: all 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+    span {
+      text-decoration: underline;
+    }
+
+    &:hover {
+      border-color: transparent;
+    }
+
+    &:focus {
+      border-color: transparent;
+    }
+
+    &:hover {
+      color: $app-link-color-hover;
+      font-weight: 700;
+    }
+
+    &:focus {
+      color: $app-link-color-hover;
+    }
+
+    &[disabled] {
+      opacity: $app-button-disabled-opacity;
+    }
+
+    &.underlined {
+      .ant-space-item {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &.ant-btn-text {
+    color: $app-link-color;
+    border-color: transparent;
+    background: none;
+
+    &:hover {
+      border-color: transparent;
+    }
+
+    &:focus {
+      border-color: transparent;
+    }
+
+    &:hover {
+      color: $app-link-color-hover;
+      font-weight: 700;
+    }
+
+    &:focus {
+      color: $app-link-color-hover;
+    }
+
+    &[disabled] {
+      opacity: $app-button-disabled-opacity;
+    }
+  }
+
+  &.ant-btn-primary {
+    border-color: $button-border-color-primary;
+
+    color: $button-color-primary;
+    background-color: $button-bg-primary;
+
+    &:hover {
+      background-color: $button-color-hover;
+    }
+
+    &:focus {
+      background-color: $button-color-hover;
+    }
+
+    &[disabled] {
+      color: $app-button-color-primary;
+      border-color: $app-button-border-primary;
+      background-color: $app-button-bg-primary;
+      opacity: $app-button-disabled-opacity;
+
+      &:hover,
+      &:focus {
+        color: $app-button-color-primary;
+      }
+    }
+  }
+
+  &.ant-btn-default {
+    color: $app-theme-color;
+    border-color: $app-button-border-primary;
+    background-color: #fff;
+
+    &:hover {
+      background-color: #faf5ff;
+      border-color: $app-button-border-primary;
+    }
+
+    &:focus {
+      background-color: #faf5ff;
+      border-color: $app-button-border-primary;
+    }
+
+    &[disabled] {
+      color: $app-theme-color;
+      border-color: $app-button-border-primary;
+      background-color: #fff;
+      opacity: $app-button-disabled-opacity;
+
+      &:hover,
+      &:focus {
+        color: $app-theme-color;
+      }
+    }
+
+    &.ant-btn-background-ghost {
+      color: $app-button-bg-primary;
+      border-color: $button-border-color-primary;
+      background-color: transparent;
+    }
+  }
+
+  &.ant-btn-secondary {
+    border-color: transparent;
+    border: none;
+    background: #f9f5ff;
+    color: $app-button-color;
+
+    &:hover {
+      background-color: $app-button-bg-hovered;
+    }
+
+    &:focus {
+      background-color: $app-button-bg-hovered;
+    }
+
+    &[disabled] {
+      color: $app-button-color-secondary-disabled;
+      border-color: transparent;
+      background-color: $app-button-bg-secondary-disabled;
+
+      &:hover,
+      &:focus {
+        color: $app-button-color-secondary-disabled;
+      }
+    }
+  }
+
+  &.ant-btn-dangerous {
+    color: #fff;
+    border-color: $app-button-color-primary-danger;
+    background-color: $app-button-color-primary-danger;
+
+    &:hover,
+    &:focus {
+      color: #fff !important;
+      border-color: $app-button-color-primary-danger !important;
+      background-color: $app-button-color-danger !important;
+    }
+
+    &[disabled] {
+      color: $app-button-color-danger-disabled;
+      border-color: $app-button-bg-danger;
+      background-color: $app-button-bg-danger;
+    }
+
+    &.ant-btn-background-ghost {
+      color: $app-button-color-danger;
+      border-color: $app-button-border-danger;
+      background-color: transparent;
+    }
+  }
+
+  // Student buttons
+  &.ant-btn-student {
+    border-color: $button-border-color-student;
+    border-width: $button-border-width-student;
+
+    color: $button-color-student;
+    font-weight: $button-font-weight-student;
+
+    &.ant-btn-primary {
+      color: $button-color-student-primary;
+    }
+  }
+
+  &.ant-btn-icon {
+    min-width: auto;
+    height: $app-icon-button-height;
+    width: $app-icon-button-width;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 99px;
+
+    .ant-btn-loading-icon {
+      width: 100%;
+    }
+  }
+
+  & > .fal + span,
+  & > span + .fal {
+    margin-left: 8px;
+  }
+
+  &.ant-btn-grey {
+    color: $app-button-color-grey;
+    border-color: $app-button-border-grey;
+    background-color: $app-button-bg-grey;
+
+    &:focus {
+      background-color: $app-button-bg-grey-hovered;
+      color: $app-button-color-grey-hovered;
+      border-color: $app-button-border-grey;
+    }
+    &:hover {
+      background-color: $app-button-bg-grey-hovered !important;
+      color: $app-button-color-grey-hovered !important;
+      border-color: $app-button-border-grey !important;
+    }
+
+    &[disabled] {
+      color: $app-button-color-grey-disabled;
+      border-color: $app-button-border-grey-disabled;
+      background-color: $app-button-bg-grey-disabled;
+      opacity: $app-button-disabled-opacity;
+
+      &:hover,
+      &:focus {
+        color: $app-button-color-grey-disabled;
+      }
+    }
+  }
+}
+
+.mily-new-design {
+  .ant-btn {
+    padding: $app-button-padding;
+    border-radius: $app-button-border-radius;
+    line-height: 1;
+    height: $app-button-height;
+
+    color: $app-button-color;
+    border-color: $app-button-border-color;
+    background-color: $app-button-bg;
+    font-weight: $button-font-weight;
+
+    &:hover {
+      color: $app-button-color-hover;
+      border-color: $app-button-border-color;
+      background: $app-button-bg-hovered;
+    }
+
+    &:focus {
+      color: $app-button-color-focus;
+      border-color: $app-button-border-color;
+    }
+
+    &.ant-btn-default {
+      &[disabled] {
+        color: $app-button-color;
+        border-color: $app-button-border-color;
+        background-color: $app-button-bg;
+        opacity: $app-button-disabled-opacity;
+
+        &:hover,
+        &:focus {
+          color: $app-button-color;
+        }
+      }
+    }
+
+    &.ant-btn-lg {
+      height: $app-button-height;
+      padding: $app-button-padding-big;
+    }
+
+    &.ant-btn-link {
+      color: $app-link-color;
+      padding-left: 0;
+      padding-right: 0;
+      border-color: transparent;
+      background: none;
+      transition: all 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+      span {
+        text-decoration: underline;
+      }
+
+      &:hover {
+        border-color: transparent;
+      }
+
+      &:focus {
+        border-color: transparent;
+      }
+
+      &:hover {
+        color: $app-link-color-hover;
+        font-weight: 700;
+      }
+
+      &:focus {
+        color: $app-link-color-hover;
+      }
+
+      &[disabled] {
+        opacity: $app-button-disabled-opacity;
+      }
+    }
+
+    &.ant-btn-text {
+      color: $app-link-color;
+      border-color: transparent;
+      background: none;
+
+      &:hover {
+        border-color: transparent;
+      }
+
+      &:focus {
+        border-color: transparent;
+      }
+
+      &:hover {
+        color: $app-link-color-hover;
+        font-weight: 700;
+      }
+
+      &:focus {
+        color: $app-link-color-hover;
+      }
+
+      &[disabled] {
+        opacity: $app-button-disabled-opacity;
+      }
+    }
+
+    &.ant-btn-primary {
+      color: $app-button-color-primary;
+      border-color: $app-button-border-primary;
+      background-color: $app-button-bg-primary;
+
+      &:hover {
+        background-color: $app-button-bg-primary-hovered;
+      }
+
+      &:focus {
+        background-color: $app-button-bg-primary-hovered;
+      }
+
+      &[disabled] {
+        color: $app-button-color-primary;
+        border-color: $app-button-border-primary;
+        background-color: $app-button-bg-primary;
+        opacity: $app-button-disabled-opacity;
+
+        &:hover,
+        &:focus {
+          color: $app-button-color-primary;
+        }
+      }
+
+      &.ant-btn-background-ghost {
+        color: $app-button-bg-primary;
+        border-color: $button-border-color-primary;
+        background-color: transparent;
+      }
+    }
+
+    &.ant-btn-secondary {
+      color: $app-theme-color;
+      border-color: $app-button-border-primary;
+      background-color: #fff;
+
+      &:hover {
+        background-color: #faf5ff;
+        border-color: $app-button-border-primary;
+      }
+
+      &:focus {
+        background-color: #faf5ff;
+        border-color: $app-button-border-primary;
+      }
+
+      &[disabled] {
+        color: $app-theme-color;
+        border-color: $app-button-border-primary;
+        background-color: #fff;
+        opacity: $app-button-disabled-opacity;
+
+        &:hover,
+        &:focus {
+          color: $app-theme-color;
+        }
+      }
+
+      &.ant-btn-background-ghost {
+        color: $app-button-bg-primary;
+        border-color: $button-border-color-primary;
+        background-color: transparent;
+      }
+    }
+
+    &.ant-btn-dangerous {
+      color: $app-button-color-danger;
+      border-color: $app-button-border-danger;
+      background-color: $app-button-bg-danger;
+
+      &:hover,
+      &:focus {
+        background-color: $app-button-bg-danger-hovered;
+        color: $app-button-color-danger-hovered;
+      }
+
+      &[disabled] {
+        color: $app-button-color-danger-disabled;
+        border-color: $app-button-border-danger-disabled;
+        background-color: $app-button-bg-danger-disabled;
+
+        &:hover,
+        &:focus {
+          color: $app-button-color-danger-disabled;
+        }
+      }
+
+      &.ant-btn-background-ghost {
+        color: $app-button-color-danger;
+        border-color: $app-button-border-danger;
+        background-color: transparent;
+      }
+    }
+
+    &.ant-btn-dangerous-primary {
+      color: #fff;
+      border-color: $app-button-color-primary-danger !important;
+      background-color: $app-button-color-primary-danger !important;
+
+      &:hover,
+      &:focus {
+        color: #fff;
+        border-color: $app-button-color-primary-danger !important;
+        background-color: $app-button-color-danger !important;
+      }
+
+      &[disabled] {
+        color: $app-button-color-danger-disabled;
+        border-color: $app-button-bg-danger;
+        background-color: $app-button-bg-danger;
+      }
+
+      &.ant-btn-background-ghost {
+        color: $app-button-color-danger;
+        border-color: $app-button-border-danger;
+        background-color: transparent;
+      }
+    }
+
+    &.ant-btn-grey {
+      color: $app-button-color-grey;
+      border-color: $app-button-border-grey;
+      background-color: $app-button-bg-grey;
+
+      &:hover,
+      &:focus {
+        background-color: $app-button-bg-grey-hovered !important;
+        color: $app-button-color-grey-hovered !important;
+        border-color: $app-button-border-grey-disabled !important;
+      }
+
+      &[disabled] {
+        color: $app-button-color-grey-disabled;
+        border-color: $app-button-border-grey-disabled;
+        background-color: $app-button-bg-grey-disabled;
+        opacity: $app-button-disabled-opacity;
+
+        &:hover,
+        &:focus {
+          color: $app-button-color-grey-disabled;
+        }
+      }
+    }
+
+    &.ant-btn-icon {
+      height: $app-icon-button-height;
+      width: $app-icon-button-width;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .ant-btn-loading-icon {
+        width: 100%;
+      }
+    }
+  }
+}
