@@ -69,7 +69,6 @@ export const API = {
     axiosInstance
       .get("businesspartners/info", { params })
       .then((res) => res.data),
-  //businesspartners/info?cardCode=10012&startDate=2025-08-01&endDate=2025-08-26
 
   //
   //SALES
@@ -103,10 +102,8 @@ export const API = {
     axiosInstance
       .get("items/inventory-items", { params })
       .then((res) => res.data),
-  getItems: (params: any) =>
-    axiosInstance
-      .get("items/items?pageSize=100000&skip=0", { params })
-      .then((res) => res.data),
+  getItemsData: (params: any) =>
+    axiosInstance.get("items/items", { params }).then((res) => res.data),
   getOnHandItems: (params: any) =>
     axiosInstance.get("items/onhand-items", { params }).then((res) => res.data),
 
@@ -115,5 +112,62 @@ export const API = {
     axiosInstance
       .post("payments/incoming-payment/batch", data)
       .then((res) => res.data.data),
-  //
+  postIncomingPayment: (data: any) =>
+    axiosInstance
+      .post("payments/incoming-payment", data)
+      .then((res) => res.data.data),
+  getIncomingPaymentInvoices: (params: any) =>
+    axiosInstance
+      .get("payments/incoming-payments/invoices", { params })
+      .then((res) => res.data),
+  getVendorPaymentAccounts: (params: any) =>
+    axiosInstance
+      .get("payments/vendor-payments/accounts", { params })
+      .then((res) => res.data),
+  postVendorPayment: (data: any) =>
+    axiosInstance
+      .post("payments/vendor-payments", data)
+      .then((res) => res.data.data),
+
+  //PURCHASES
+  getPurchaseInvoices: (params: any) =>
+    axiosInstance
+      .get("purchases/purchase-invoices", { params })
+      .then((res) => res.data),
+  getReservePurchaseInvoices: (params: any) =>
+    axiosInstance
+      .get("purchases/reserve-purchase-invoices", { params })
+      .then((res) => res.data),
+  postPurchaseInvoices: (data: any) =>
+    axiosInstance
+      .post("purchases/purchase-invoices", data)
+      .then((res) => res.data.data),
+  postPurchaseInvoicesCancel: (docEntry: any) =>
+    axiosInstance
+      .post(`purchases/purchase-invoices/${docEntry}/cancel`, docEntry)
+      .then((res) => res.data.data),
+
+  //CASH_ACCOUNTS
+  getCashAccounts: (params: any) =>
+    axiosInstance.get("cashaccounts", { params }).then((res) => res.data),
+
+  //INVENTORY_TRANSFER_REQUESTS
+  getInventoryTransferRequests: (params: any) =>
+    axiosInstance
+      .get("inventorytransferrequests", { params })
+      .then((res) => res.data),
+  postInventoryTransferRequests: (data: any) =>
+    axiosInstance
+      .post("inventorytransferrequests", data)
+      .then((res) => res.data.data),
+  patchInventoryTransferRequests: (data: any, docEntry: number) =>
+    axiosInstance
+      .patch(`inventorytransferrequests/${docEntry}`, data)
+      .then((res) => res.data.data),
+
+  //STOCK_TRANSFER
+  getStockTransfers: (params: any) =>
+    axiosInstance.get("stockTransfers", { params }).then((res) => res.data),
+  postStockTransfers: (data: any) =>
+    axiosInstance.post("stockTransfers", data).then((res) => res.data),
 };

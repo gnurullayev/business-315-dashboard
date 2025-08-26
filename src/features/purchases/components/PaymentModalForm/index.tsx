@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import type { IOrder } from "@/types/order";
-import type { User } from "@/types/user";
 import "./styles.scss";
 import { usePaymentMutation } from "../../hooks/usePaymentMutation";
 import { buildPayments, calcTotalAmount } from "../../lib/idex";
@@ -11,6 +10,8 @@ import { PaymentFormItems } from "./PaymentFormItems";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { API } from "@/services/api";
+import type { PurchasesOrSalesType } from "../../types";
+import type { RootState } from "@/store";
 
 interface IProps {
   open: boolean;
@@ -18,6 +19,7 @@ interface IProps {
   setReload: (cb: (prev: number) => number) => void;
   showOrder?: IOrder;
   paymentSuccessShowFn?: (a: string | null) => void;
+  purchasesOrSales?: PurchasesOrSalesType;
 }
 
 const PaymentModalForm = ({
@@ -26,10 +28,11 @@ const PaymentModalForm = ({
   setReload,
   showOrder,
   paymentSuccessShowFn,
+  purchasesOrSales = "purchase",
 }: IProps) => {
   const [formInstance] = Form.useForm();
   const { t } = useTranslation();
-  const userInfo: User = useSelector((store: any) => store.userData.user);
+  const userInfo = useSelector((store: RootState) => store.userData);
 
   const { data: docRate } = useQuery({
     queryKey: ["get-currency-rate"],
@@ -80,7 +83,6 @@ const PaymentModalForm = ({
     if (paymentSuccessShowFn) paymentSuccessShowFn(null);
   };
 
-  console.log("showOrder", showOrder);
   useEffect(() => {
     if (showOrder) {
       formInstance.setFieldsValue({
@@ -127,7 +129,7 @@ const PaymentModalForm = ({
               loading={isPending}
               disabled={isPending}
             >
-              {t("general.add")}
+              {t(`general.${purchasesOrSales === "purchase" ? "add" : "pay"}`)}
             </Button>
           </div>
         </div>

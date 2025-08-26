@@ -1,14 +1,16 @@
-import { Filter } from "@/components";
+import { ErrorBoundary, Filter } from "@/components";
 import { API } from "@/services/api";
 import { Button } from "antd";
 import dayjs from "dayjs";
 import { useState, type Dispatch, type FC, type SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import type { IPurchaseFilter, PurchasesFormType } from "../../types";
-import PaymentModalForm from "../PaymentModalForm";
+import PurchaseCreateCreate from "../PurchaseCreate";
+import { defaultPurchaseInvoicesFilterData } from "../../purchase-invoices";
 
 interface IProps {
   setFilter: Dispatch<SetStateAction<IPurchaseFilter>>;
+  filter: IPurchaseFilter;
   purchasesType: PurchasesFormType;
 }
 
@@ -19,7 +21,7 @@ const fields: any = (t: any) => {
       name: "cardName",
       label: t("purchases.searchBySupplier"),
       placeholder: t("general.choose"),
-      params: { cardType: "C" },
+      params: { cardType: "S" },
       request: API.getBusinessPartners,
       paramKey: "cardName",
       resDataKey: "data",
@@ -42,7 +44,11 @@ const fields: any = (t: any) => {
   ];
 };
 
-const PurchaseInvoicesFilter: FC<IProps> = ({ setFilter, purchasesType }) => {
+const PurchaseInvoicesFilter: FC<IProps> = ({
+  setFilter,
+  purchasesType,
+  filter,
+}) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -58,23 +64,39 @@ const PurchaseInvoicesFilter: FC<IProps> = ({ setFilter, purchasesType }) => {
           : undefined,
       });
   };
+  const formValues: any = {
+    ...filter,
+  };
+
+  if (filter?.startDate) formValues.startDate = dayjs(filter?.startDate);
+  if (filter?.endDate) formValues.endDate = dayjs(filter?.startDate);
 
   return (
     <div>
-      <PaymentModalForm open={open} setOpen={setOpen} setReload={() => null} />
-      <Filter
-        fields={fields(t)}
-        onFilter={handleFilter}
-        extraButton={
-          <>
-            {purchasesType === "purchaseInvoices" && (
-              <Button type="primary" onClick={() => setOpen(true)}>
-                {t(`purchases.addPurchase`)}
-              </Button>
-            )}
-          </>
-        }
-      />
+      <ErrorBoundary>
+        <PurchaseCreateCreate
+          open={open}
+          setOpen={setOpen}
+          purchaseRefetch={() => setFilter(defaultPurchaseInvoicesFilterData)}
+        />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Filter
+          fields={fields(t)}
+          onFilter={handleFilter}
+          formValues={formValues}
+          extraButton={
+            <>
+              {purchasesType === "purchaseInvoices" && (
+                <Button type="primary" onClick={() => setOpen(true)}>
+                  {t(`purchases.addPurchase`)}
+                </Button>
+              )}
+            </>
+          }
+        />
+      </ErrorBoundary>
     </div>
   );
 };

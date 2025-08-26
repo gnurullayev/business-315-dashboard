@@ -1,37 +1,55 @@
 import React from "react";
 import { Tabs } from "antd";
-import type { TabsProps } from "antd";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { routes } from "@/constants/routes";
 import "./styles.scss";
+import { useTranslation } from "react-i18next";
 
-const items: TabsProps["items"] = [
-  {
-    key: routes.SALES_ORDERS,
-    label: <Link to={routes.SALES_ORDERS}>Sotuvlar buyurtmasi</Link>,
-    children: <Outlet />,
-  },
-  {
-    key: routes.SALES,
-    label: <Link to={routes.SALES}>Sotuvlar </Link>,
-    children: <Outlet />,
-  },
-  {
-    key: routes.CANCELED_SALES,
-    label: <Link to={routes.CANCELED_SALES}>Bekor qilingan sotuvlar </Link>,
-    children: <Outlet />,
-  },
-  {
-    key: routes.SALES_REPORTS,
-    label: <Link to={routes.SALES_REPORTS}>Sotuv hisobotlari </Link>,
-    children: <Outlet />,
-  },
-];
+const items = (t: any) => {
+  return [
+    {
+      key: routes.SALES_ORDERS,
+      label: (
+        <Link to={routes.SALES_ORDERS}>{t("navigation.salesOrders")}</Link>
+      ),
+      children: <Outlet />,
+    },
+    {
+      key: routes.SALES,
+      label: <Link to={routes.SALES}>{t("navigation.sales")}</Link>,
+      children: <Outlet />,
+    },
+    {
+      key: routes.CANCELED_SALES,
+      label: (
+        <Link to={routes.CANCELED_SALES}>{t("navigation.canceledSales")}</Link>
+      ),
+      children: <Outlet />,
+    },
+    {
+      key: routes.SALES_REPORTS,
+      label: (
+        <Link to={routes.SALES_REPORTS}>{t("navigation.salesReports")}</Link>
+      ),
+      children: <Outlet />,
+    },
+  ];
+};
 
-const SalesTab: React.FC = () => (
-  <div className="sales_tab">
-    <Tabs defaultActiveKey={routes.SALES_ORDERS} items={items} />
-  </div>
-);
+const SalesTab: React.FC = () => {
+  const location = useLocation();
+  const { t } = useTranslation();
+  const activeKey = location.pathname.split("/")[2];
+
+  return (
+    <div className="sales_tab">
+      <Tabs
+        defaultActiveKey={routes.SALES_ORDERS}
+        activeKey={activeKey}
+        items={items(t)}
+      />
+    </div>
+  );
+};
 
 export default SalesTab;

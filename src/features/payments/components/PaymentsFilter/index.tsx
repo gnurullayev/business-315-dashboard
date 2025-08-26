@@ -9,6 +9,8 @@ import AddPaymentsModalForm from "../AddPaymentsModalForm";
 interface IProps {
   setFilter: Dispatch<SetStateAction<IPaymentsFilter>>;
   paymentsType: PaymentsType;
+  filter: IPaymentsFilter;
+  setReload: Dispatch<SetStateAction<number>>;
 }
 
 const fields: any = (t: any) => {
@@ -28,7 +30,12 @@ const fields: any = (t: any) => {
   ];
 };
 
-const PaymentsFilter: FC<IProps> = ({ setFilter, paymentsType }) => {
+const PaymentsFilter: FC<IProps> = ({
+  setFilter,
+  paymentsType,
+  filter,
+  setReload,
+}) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -44,20 +51,29 @@ const PaymentsFilter: FC<IProps> = ({ setFilter, paymentsType }) => {
       });
   };
 
+  const formValues: any = {
+    ...filter,
+  };
+
+  if (filter?.startDate) formValues.startDate = dayjs(filter?.startDate);
+  if (filter?.endDate) formValues.endDate = dayjs(filter?.startDate);
+
   return (
     <div>
       <ErrorBoundary>
         <AddPaymentsModalForm
           open={open}
           setOpen={setOpen}
-          setReload={() => null}
+          setReload={(prev) => setReload(prev)}
           paymentsType={paymentsType}
         />
       </ErrorBoundary>
+
       <ErrorBoundary>
         <Filter
           fields={fields(t)}
           onFilter={handleFilter}
+          formValues={formValues}
           extraButton={
             <Button type="primary" onClick={() => setOpen(true)}>
               {t(

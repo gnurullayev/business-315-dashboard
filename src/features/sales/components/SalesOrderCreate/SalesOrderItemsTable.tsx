@@ -5,6 +5,8 @@ import { API } from "@/services/api";
 import { useTranslation } from "react-i18next";
 import WarehouseInfoModal from "./WarehouseInfoModal";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store";
 
 const SalesOrderItemsTable = ({
   formInstance,
@@ -14,6 +16,7 @@ const SalesOrderItemsTable = ({
 }: any) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState<boolean>(false);
+  const userInfo = useSelector((store: RootState) => store.userData);
 
   return (
     <div className="order_create_form__main">
@@ -24,10 +27,12 @@ const SalesOrderItemsTable = ({
         placeholder={t("general.choose")}
         required={true}
         request={API.getSalesEmployees}
+        requestQueryKey={`getSalesEmployees`}
         resDataKey="data"
         valueKey="slpCode"
         labelKey="slpName"
         className="order_create_form__sales_manager"
+        disabled={!!userInfo.salesPersonCode}
         rules={[{ required: true, message: t("general.enterInformation") }]}
       />
       <div className="order_create_form__table">
@@ -64,6 +69,7 @@ const SalesOrderItemsTable = ({
                     placeholder={t("general.choose")}
                     params={{ pageSize: 100000, skip: 0 }}
                     request={API.getInventoryItems}
+                    requestQueryKey={`getInventoryItems-${index}`}
                     paramKey={"itemName"}
                     resDataKey="data"
                     valueKey="itemCode"
@@ -186,6 +192,7 @@ const SalesOrderItemsTable = ({
                     placeholder={t("general.choose")}
                     required={true}
                     request={API.getWarehouses}
+                    requestQueryKey={`getWarehouses-${index}`}
                     resDataKey="data"
                     valueKey="warehouseCode"
                     labelKey="warehouseName"

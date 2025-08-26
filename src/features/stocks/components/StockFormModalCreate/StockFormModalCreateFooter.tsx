@@ -8,6 +8,8 @@ interface IProps {
   loading: boolean;
   mode: FormModeType;
   stockType: StockType;
+  stockTransfersPending: boolean;
+  handleStockTransfers: () => void;
 }
 
 const StockFormModalCreateFooter: FC<IProps> = ({
@@ -15,6 +17,8 @@ const StockFormModalCreateFooter: FC<IProps> = ({
   handleClose,
   mode,
   stockType,
+  handleStockTransfers,
+  stockTransfersPending,
 }) => {
   const { t } = useTranslation();
 
@@ -22,14 +26,24 @@ const StockFormModalCreateFooter: FC<IProps> = ({
     <>
       <div className="stock_form_create__footer">
         {stockType === "incoming-products" && (
-          <Button type="primary" onClick={handleClose}>
+          <Button
+            type="primary"
+            loading={stockTransfersPending}
+            disabled={stockTransfersPending}
+            onClick={handleStockTransfers}
+          >
             {t("general.receive")}
           </Button>
         )}
         {stockType === "stock-products" && (
           <>
             {mode !== "CREATE" ? (
-              <Button type="primary" onClick={handleClose}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+                disabled={loading}
+              >
                 {t("general.edit")}
               </Button>
             ) : (

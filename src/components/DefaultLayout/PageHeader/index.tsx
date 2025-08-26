@@ -3,9 +3,9 @@ import { Logo } from "@/assets/images";
 import { DownOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { dispatch } from "@/store";
+import { dispatch, type RootState } from "@/store";
 import { useSelector } from "react-redux";
-import type { User } from "@/types/user";
+import type { RootModel } from "@/store/models";
 
 const { Header } = Layout;
 interface PageHeaderProps {
@@ -20,7 +20,7 @@ const items: MenuProps["items"] = [
 ];
 
 const PageHeader: React.FC<PageHeaderProps> = () => {
-  const user: User = useSelector((state: any) => state.userData?.user);
+  const user = useSelector((state: RootState) => state.userData);
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     if (e.key === "logout") {
       handleLogout();

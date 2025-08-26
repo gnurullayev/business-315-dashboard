@@ -1,23 +1,33 @@
 import { useState } from "react";
-import PurchaseInvoicesFilter from "./components/PaymentsFilter";
-import PurchaseInvoicesList from "./components/PaymentsList";
+import PaymentsFilter from "./components/PaymentsFilter";
+import PaymentsList from "./components/PaymentsList";
 import type { IPaymentsFilter } from "./types";
 import { ErrorBoundary } from "@/components";
-
-const defaultDate = {
+import dayjs from "dayjs";
+export const defaultPaymentFilterData = {
   startDate: undefined,
-  endDate: undefined,
+  endDate: dayjs().format("YYYY-MM-DD"),
 };
 
 const IncomingPayments = () => {
-  const [filter, setFilter] = useState<IPaymentsFilter>(defaultDate);
+  const [filter, setFilter] = useState<IPaymentsFilter>(
+    defaultPaymentFilterData
+  );
+  const [reload, setReload] = useState(0);
+
   return (
     <div>
       <ErrorBoundary>
-        <PurchaseInvoicesFilter setFilter={setFilter} paymentsType="incoming" />
+        <PaymentsFilter
+          setFilter={setFilter}
+          paymentsType="incoming"
+          filter={filter}
+          setReload={setReload}
+        />
       </ErrorBoundary>
+
       <ErrorBoundary>
-        <PurchaseInvoicesList filter={filter} paymentsType="incoming" />
+        <PaymentsList filter={filter} paymentsType="incoming" reload={reload} />
       </ErrorBoundary>
     </div>
   );

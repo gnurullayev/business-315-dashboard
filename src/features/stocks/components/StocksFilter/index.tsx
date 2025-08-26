@@ -1,4 +1,4 @@
-import { Filter } from "@/components";
+import { ErrorBoundary, Filter } from "@/components";
 import { Button } from "antd";
 import dayjs from "dayjs";
 import { useState, type Dispatch, type FC, type SetStateAction } from "react";
@@ -10,6 +10,8 @@ import { FormMode } from "@/enums";
 interface IProps {
   setFilter: Dispatch<SetStateAction<IStockFilter>>;
   stockType: StockType;
+  setReload?: Dispatch<SetStateAction<number>>;
+  filter: IStockFilter;
 }
 
 const fields: any = (t: any) => {
@@ -29,7 +31,12 @@ const fields: any = (t: any) => {
   ];
 };
 
-const StocksFilter: FC<IProps> = ({ setFilter, stockType }) => {
+const StocksFilter: FC<IProps> = ({
+  setFilter,
+  stockType,
+  setReload,
+  filter,
+}) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -45,27 +52,41 @@ const StocksFilter: FC<IProps> = ({ setFilter, stockType }) => {
       });
   };
 
+  const formValues: any = {
+    ...filter,
+  };
+
+  if (filter?.startDate) formValues.startDate = dayjs(filter?.startDate);
+  if (filter?.endDate) formValues.endDate = dayjs(filter?.startDate);
+
   return (
     <div>
-      <StockFormModalCreate
-        open={open}
-        setOpen={setOpen}
-        stockType={stockType}
-        mode={FormMode.CREATE}
-      />
-      <Filter
-        fields={fields(t)}
-        onFilter={handleFilter}
-        extraButton={
-          <>
-            {stockType === "stock-products" && (
-              <Button type="primary" onClick={() => setOpen(true)}>
-                {t(`general.add`)}
-              </Button>
-            )}
-          </>
-        }
-      />
+      <ErrorBoundary>
+        <StockFormModalCreate
+          open={open}
+          setOpen={setOpen}
+          stockType={stockType}
+          mode={FormMode.CREATE}
+          setReload={setReload}
+        />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Filter
+          fields={fields(t)}
+          onFilter={handleFilter}
+          formValues={formValues}
+          extraButton={
+            <>
+              {stockType === "stock-products" && (
+                <Button type="primary" onClick={() => setOpen(true)}>
+                  {t(`general.add`)}
+                </Button>
+              )}
+            </>
+          }
+        />
+      </ErrorBoundary>
     </div>
   );
 };

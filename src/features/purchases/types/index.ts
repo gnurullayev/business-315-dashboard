@@ -5,3 +5,4 @@ export interface IPurchaseFilter {
 }
 
 export type PurchasesFormType = "purchasesReceiving" | "purchaseInvoices";
+export type PurchasesOrSalesType = "sales" | "purchase";

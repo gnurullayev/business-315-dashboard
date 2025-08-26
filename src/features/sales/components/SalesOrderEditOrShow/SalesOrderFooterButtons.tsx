@@ -107,6 +107,7 @@ const SalesOrderFooterButtons = ({
         setReload={() => null}
         showOrder={showOrder}
         paymentSuccessShowFn={handleSuccess}
+        purchasesOrSales="sales"
       />
     </>
   );

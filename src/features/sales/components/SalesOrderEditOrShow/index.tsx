@@ -60,8 +60,6 @@ const SalesOrderEditOrShow: FC<IProps> = ({
     mutate(payload);
   };
 
-  console.log("showOrder123", showOrder);
-
   return (
     <Modal
       title={

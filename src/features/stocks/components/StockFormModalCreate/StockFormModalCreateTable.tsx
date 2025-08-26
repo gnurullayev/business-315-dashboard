@@ -6,12 +6,15 @@ import { useTranslation } from "react-i18next";
 import type { FormModeType } from "@/types";
 import type { FC } from "react";
 import { FormMode } from "@/enums";
+import type { StockType } from "../../types";
 interface IProps {
   mode: FormModeType;
+  stockType: StockType;
 }
 
-const StockFormModalCreateTable: FC<IProps> = ({ mode }) => {
+const StockFormModalCreateTable: FC<IProps> = ({ mode, stockType }) => {
   const { t } = useTranslation();
+  const isDisabled = stockType !== "stock-products";
 
   return (
     <div className="stock_form_create__table">
@@ -26,19 +29,22 @@ const StockFormModalCreateTable: FC<IProps> = ({ mode }) => {
                   name={[index, "itemCodes"]}
                   placeholder={t("general.choose")}
                   params={{ pageSize: 100000, skip: 0 }}
-                  request={API.getInventoryItems}
+                  request={API.getItemsData}
+                  requestQueryKey={`getItemsData-${index}`}
                   paramKey={"itemName"}
                   resDataKey="data"
                   valueKey="itemCode"
                   labelKey="itemName"
                   showSearch={true}
-                  minWidth="320px"
+                  minWidth="500px"
+                  disabled={isDisabled}
                   rules={[
                     {
                       required: true,
                       message: t("general.enterInformation"),
                     },
                   ]}
+                  className={isDisabled ? "hide-and-disabled" : ""}
                 />
               ),
             },
@@ -60,14 +66,22 @@ const StockFormModalCreateTable: FC<IProps> = ({ mode }) => {
                     },
                   ]}
                 >
-                  <Input min={1} />
+                  <Input
+                    min={1}
+                    disabled={isDisabled}
+                    className={isDisabled ? "hide-and-disabled" : ""}
+                  />
                 </Form.Item>
               ),
             },
             {
               title: t("stock.unitOfMeasurement"),
               dataIndex: "unitOfMeasurement",
-              render: (value: any, __: any) => <span>{value}</span>,
+              render: (_: any, __: any, index: number) => (
+                <Form.Item name={[index, "uoMCode"]}>
+                  <Input min={1} className="hide-and-disabled" disabled />
+                </Form.Item>
+              ),
             },
             ...(mode === FormMode.CREATE
               ? [

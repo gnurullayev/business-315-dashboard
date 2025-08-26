@@ -10,7 +10,7 @@ interface IProps {
   filter?: { startDate: any; endDate: any };
 }
 const Statistics: FC<IProps> = ({ filter }) => {
-  const { data, refetch, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["daily-sales", filter],
     queryFn: async () => API.getDailySales(filter),
   });
@@ -26,10 +26,6 @@ const Statistics: FC<IProps> = ({ filter }) => {
       { invoiceTotal: 0, paymentTotal: 0 }
     );
   }, [data?.data]);
-
-  useEffect(() => {
-    refetch();
-  }, [filter]);
 
   if (isLoading) {
     return <Loader />;

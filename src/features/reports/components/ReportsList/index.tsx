@@ -242,10 +242,6 @@ const ReportsList: FC<IProps> = ({ filter }) => {
   });
   const { styles } = useStyle();
 
-  useEffect(() => {
-    refetch();
-  }, [filter]);
-
   return (
     <div className="reports_list page_layout">
       <Table

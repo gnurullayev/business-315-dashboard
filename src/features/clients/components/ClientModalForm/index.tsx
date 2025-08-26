@@ -35,8 +35,6 @@ const ClientModalForm: FC<IProps> = ({
   const { t } = useTranslation();
   useClientFormSync({ formInstance, showClient });
 
-  console.log("showClient", showClient);
-
   const handleClose = () => {
     formInstance.resetFields();
     if (setShowClient) {
@@ -130,6 +128,7 @@ const ClientModalForm: FC<IProps> = ({
               valueKey="code"
               labelKey="name"
               disabled={isClientFormDisabled}
+              requestQueryKey={"getBusinessPartnersGroups"}
               rules={[
                 { required: true, message: t("general.enterInformation") },
               ]}

@@ -5,15 +5,16 @@ import "./styles.scss";
 import { useState, type Dispatch, type FC, type SetStateAction } from "react";
 import { FormMode } from "@/enums";
 import type { FormModeType } from "@/types";
-import type { IOrder } from "@/types/order";
 import { useShowPurchaseFormSync } from "../../hooks/useShowPurchaseFormSync";
 import type { PurchasesFormType } from "../../types";
+import type { IPurchase } from "@/types/purchase";
+import { useTranslation } from "react-i18next";
 
 interface IProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  showPurchase: IOrder | null;
-  setShowPurchase: Dispatch<SetStateAction<any>>;
+  showPurchase: IPurchase | null;
+  setShowPurchase: Dispatch<SetStateAction<IPurchase | null>>;
   purchaseRefetch: any;
   purchasesType: PurchasesFormType;
 }
@@ -27,6 +28,7 @@ const PurchaseShowModal: FC<IProps> = ({
 }) => {
   const [formInstance] = Form.useForm();
   const [_, setMode] = useState<FormModeType>(FormMode.SHOW);
+  const { t } = useTranslation();
   const handleClose = () => {
     setOpen(false);
     setShowPurchase(null);
@@ -36,27 +38,11 @@ const PurchaseShowModal: FC<IProps> = ({
 
   useShowPurchaseFormSync({ formInstance, showPurchase });
 
-  // const { mutate, isPending } = useMutation({
-  //   mutationKey: ["edit-sales-order"],
-  //   mutationFn: (data: any) =>
-  //     API.patchSalesOrders(data, showPurchase?.docEntry as number),
-  //   onSuccess: () => {
-  //     toast.success("Order Yangilandi");
-  //     handleClose();
-  //     purchaseRefetch();
-  //   },
-  // });
-
-  const onFinished = (_: any) => {
-    // const payload = mapFormValuesToPayload(values, showPurchase!);
-    // mutate(payload);
-  };
-
   return (
     <Modal
       title={
         <h3>
-          <b>Hujjat raqami</b> : {showPurchase?.docNum}
+          <b>{t("general.docNumber")}</b> : {showPurchase?.docNum}
         </h3>
       }
       open={open && !!showPurchase}
@@ -64,17 +50,21 @@ const PurchaseShowModal: FC<IProps> = ({
       onCancel={handleClose}
       width="80%"
     >
-      <Form
-        form={formInstance}
-        className="sales_order_edit_or_show"
-        onFinish={onFinished}
-      >
+      <Form form={formInstance} className="sales_order_edit_or_show">
         <div className="sales_order_edit_or_show__main">
-          <SalesOrderItemsTable purchasesType={purchasesType} />
+          <SalesOrderItemsTable
+            purchasesType={purchasesType}
+            data={
+              showPurchase?.documentLines ? showPurchase?.documentLines : []
+            }
+          />
         </div>
 
         {purchasesType === "purchaseInvoices" && (
-          <SalesOrderFooter handleClose={handleClose} />
+          <SalesOrderFooter
+            handleClose={handleClose}
+            docEntry={showPurchase?.docEntry as number}
+          />
         )}
       </Form>
     </Modal>

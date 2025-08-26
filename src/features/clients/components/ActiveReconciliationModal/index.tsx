@@ -41,7 +41,7 @@ const ActiveReconciliationModal: FC<IProps> = ({
     setOpen(false);
   };
 
-  const { refetch, data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["getBusinessPartnersInfo", filter, showClient?.cardCode],
     queryFn: async () => {
       if (showClient?.cardCode) {
@@ -56,15 +56,10 @@ const ActiveReconciliationModal: FC<IProps> = ({
   });
 
   const onValuesChange = (values: any) => {
-    console.log(values);
     const key = Object.keys(values)[0];
 
     setFilter({ ...filter, [key]: dayjs(values[key]).format("YYYY-MM-DD") });
   };
-
-  useEffect(() => {
-    refetch();
-  }, [filter]);
 
   useEffect(() => {
     if (data) {

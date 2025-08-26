@@ -13,8 +13,10 @@ export const handleError = (error: AxiosError) => {
       }
     });
   } else if (isError?.message) {
-    toast.error(`Xatolik yuz berdi: ${isError.message}`);
+    if (isError?.message !== "Network Error")
+      toast.error(`Xatolik yuz berdi: ${isError.message}`);
   } else {
-    toast.error(`Xatolik yuz berdi: ${error.message}`);
+    if (error.message !== "Network Error")
+      toast.error(`Xatolik yuz berdi: ${error.message}`);
   }
 };

@@ -30,6 +30,7 @@ const SalesOrderEditOrShowTable = ({ mode, formInstance }: any) => {
                     placeholder={t("general.choose")}
                     params={{ pageSize: 100000, skip: 0 }}
                     request={API.getInventoryItems}
+                    requestQueryKey={`getInventoryItems-${index}`}
                     paramKey={"itemName"}
                     resDataKey="data"
                     valueKey="itemCode"

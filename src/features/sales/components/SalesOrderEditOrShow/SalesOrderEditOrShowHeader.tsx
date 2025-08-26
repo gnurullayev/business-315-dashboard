@@ -20,6 +20,7 @@ const SalesOrderEditOrShowHeader: FC<IProps> = ({ salesType }) => {
           placeholder={t("general.choose")}
           params={{ cardType: "C" }}
           request={API.getBusinessPartners}
+          requestQueryKey={`getBusinessPartners`}
           paramKey="cardName"
           resDataKey="data"
           valueKey="cardCode"

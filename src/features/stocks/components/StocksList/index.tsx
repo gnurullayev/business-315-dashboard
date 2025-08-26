@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from "react";
+import { useState, type FC } from "react";
 import type { TableColumnsType } from "antd";
 import { Button, Table } from "antd";
 import { useQuery } from "@tanstack/react-query";
@@ -10,19 +10,26 @@ import Paginations from "@/components/Pagination";
 import "./styles.scss";
 import type { IStockFilter, StockType } from "../../types";
 import StockFormModalCreate from "../StockFormModalCreate";
+import type { IStock } from "@/types/stock";
+import dayjs from "dayjs";
+import { ErrorBoundary } from "@/components";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store";
 
 interface IProps {
   filter: IStockFilter;
   stockType: StockType;
+  reload?: number;
 }
 
-const StocksList: FC<IProps> = ({ filter, stockType }) => {
+const StocksList: FC<IProps> = ({ filter, stockType, reload }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const [showStockOpen, setStockOpen] = useState(false);
-  const [_, setShowOrder] = useState(null);
+  const [showStock, setShowStock] = useState(null);
+  const userInfo = useSelector((store: RootState) => store.userData);
 
-  const columns: TableColumnsType<any> = [
+  const columns: TableColumnsType<IStock> = [
     {
       title: t("general.docNumber"),
       dataIndex: "docNum",
@@ -30,18 +37,21 @@ const StocksList: FC<IProps> = ({ filter, stockType }) => {
     },
     {
       title: t("general.date"),
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "docDate",
+      key: "docDate",
+      render: (_v: any, record) => (
+        <span>{dayjs(record.docDate).format("DD.MM.YYYY")}</span>
+      ),
     },
     {
       title: t("stock.fromWarehouse"),
-      dataIndex: "fromWarehouse",
-      key: "fromWarehouse",
+      dataIndex: "fromWarehouseName",
+      key: "fromWarehouseName",
     },
     {
       title: t("stock.toWarehouse"),
-      dataIndex: "toWarehouse",
-      key: "toWarehouse",
+      dataIndex: "toWarehouseName",
+      key: "toWarehouseName",
     },
     {
       title: t("general.actions"),
@@ -52,7 +62,7 @@ const StocksList: FC<IProps> = ({ filter, stockType }) => {
             type="primary"
             onClick={() => {
               setStockOpen(true);
-              setShowOrder(record);
+              setShowStock(record);
             }}
           >
             <Eye />
@@ -62,40 +72,71 @@ const StocksList: FC<IProps> = ({ filter, stockType }) => {
     },
   ];
 
-  const { data, refetch, isLoading } = useQuery({
-    queryKey: ["sales-orders", filter, page],
-    queryFn: async () =>
-      await API.getSalesOrders({ ...filter, skip: page, pageSize: 10 }),
-  });
+  const stockWarehouseParams = () => {
+    const param: any = {};
+    if (stockType === "stock-products" || stockType === "receiving-products") {
+      param.fromWarehouseCode = userInfo.wareHouse;
+    } else {
+      param.toWarehouseCode = userInfo.wareHouse;
+    }
+    return param;
+  };
 
-  useEffect(() => {
-    refetch();
-  }, [filter]);
+  const fetchPurchases = async () => {
+    const param = {
+      ...filter,
+      ...stockWarehouseParams(),
+      skip: page,
+      documentStatus: "O",
+      pageSize: 10,
+    };
+    if (stockType === "stock-products" || stockType === "incoming-products") {
+      return await API.getInventoryTransferRequests(param);
+    }
+    return await API.getStockTransfers(param);
+  };
+
+  const { data, refetch, isLoading } = useQuery({
+    queryKey: ["getInventoryTransferRequests", filter, page, reload],
+    queryFn: fetchPurchases,
+  });
 
   const onChange = (value: any) => {
     setPage((value -= 1));
+  };
+
+  const setReload = (_: number) => {
     refetch();
   };
 
   return (
     <div className="stocks_list">
-      <Table<any>
-        columns={columns}
-        dataSource={data?.data ? data?.data : []}
-        loading={isLoading}
-        pagination={false}
-      />
+      <ErrorBoundary>
+        <Table<IStock>
+          columns={columns}
+          dataSource={data?.data ? data?.data : []}
+          loading={isLoading}
+          pagination={false}
+          rowKey={(record) => record.docEntry}
+        />
+      </ErrorBoundary>
+
       <Paginations
         onChange={onChange}
         isLoading={isLoading}
         isDataLength={data?.data?.length < 10}
       />
-      <StockFormModalCreate
-        open={showStockOpen}
-        setOpen={setStockOpen}
-        stockType={stockType}
-        mode={FormMode.EDIT}
-      />
+
+      <ErrorBoundary>
+        <StockFormModalCreate
+          open={showStockOpen}
+          setOpen={setStockOpen}
+          stockType={stockType}
+          mode={FormMode.EDIT}
+          setReload={setReload}
+          showStock={showStock}
+        />
+      </ErrorBoundary>
     </div>
   );
 };

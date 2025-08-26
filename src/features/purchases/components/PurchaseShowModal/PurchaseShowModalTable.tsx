@@ -2,21 +2,19 @@ import { Form, Input, Table, type TableColumnsType } from "antd";
 import { useTranslation } from "react-i18next";
 import type { PurchasesFormType } from "../../types";
 import type { FC } from "react";
+import type { IPurchaseDocumentLine } from "@/types/purchase";
 interface IProps {
   purchasesType: PurchasesFormType;
+  data: IPurchaseDocumentLine[];
 }
 
-const PurchaseShowModalTable: FC<IProps> = ({ purchasesType }) => {
+const PurchaseShowModalTable: FC<IProps> = ({ purchasesType, data }) => {
   const { t } = useTranslation();
   const columns: TableColumnsType<any> = [
     {
       title: t("general.productName"),
-      key: "productName",
-      render: (_: any, record: any) => (
-        <span>
-          {record?.docTotal} {record?.docCurrency}
-        </span>
-      ),
+      key: "itemDescription",
+      dataIndex: "itemDescription",
     },
     {
       title: t("general.quantity"),
@@ -37,13 +35,13 @@ const PurchaseShowModalTable: FC<IProps> = ({ purchasesType }) => {
           },
           {
             title: t("general.totalAmount"),
-            dataIndex: "totalAmount",
-            key: "totalAmount",
+            dataIndex: "lineTotal",
+            key: "lineTotal",
           },
           {
             title: t("general.warehouseName"),
-            dataIndex: "warehouseName",
-            key: "warehouseName",
+            dataIndex: "whsName",
+            key: "whsName",
           },
         ]
       : []),
@@ -51,16 +49,13 @@ const PurchaseShowModalTable: FC<IProps> = ({ purchasesType }) => {
       ? [
           {
             title: t("purchases.remainingNumber"),
-            key: "docTotalReceiving",
-            render: (_: any, record: any) => (
-              <span>
-                {record?.docTotal} {record?.docCurrency}
-              </span>
-            ),
+            key: "remainingNumber",
+            dataIndex: "remainingNumber",
           },
         ]
       : []),
   ];
+
   return (
     <>
       <div className="sales_order_edit_or_show__header">
@@ -99,7 +94,7 @@ const PurchaseShowModalTable: FC<IProps> = ({ purchasesType }) => {
       <div className="sales_order_edit_or_show__table">
         <Table<any>
           columns={columns}
-          dataSource={[]}
+          dataSource={data}
           loading={false}
           pagination={false}
         />

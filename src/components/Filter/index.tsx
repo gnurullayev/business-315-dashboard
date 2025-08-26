@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, DatePicker, Button, Space } from "antd";
 import type { FormInstance } from "antd/es/form";
 import "./styles.scss";
@@ -13,6 +13,7 @@ interface FilterProps {
   onFilter: (values: Record<string, any>) => void;
   extraButton?: React.ReactNode;
   form?: FormInstance;
+  formValues?: any;
 }
 
 const Filter: React.FC<FilterProps> = ({
@@ -20,6 +21,7 @@ const Filter: React.FC<FilterProps> = ({
   onFilter,
   extraButton,
   form,
+  formValues,
 }) => {
   const [formInstance] = Form.useForm(form);
   const [activeFilter, setActiveFilter] = useState(true);
@@ -39,6 +41,12 @@ const Filter: React.FC<FilterProps> = ({
     setActiveFilter((prev) => !prev);
     onFilter({});
   };
+
+  useEffect(() => {
+    if (formValues) {
+      formInstance.setFieldsValue(formValues);
+    }
+  }, [formInstance, formValues]);
 
   return (
     <Form
@@ -123,6 +131,7 @@ const Filter: React.FC<FilterProps> = ({
                     labelKey={field.labelKey}
                     rules={field.rules}
                     showSearch={field.showSearch}
+                    requestQueryKey={field.name}
                   />
                 );
 

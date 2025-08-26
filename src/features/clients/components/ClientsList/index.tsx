@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from "react";
+import { useState, type FC } from "react";
 import { Button, Table } from "antd";
 import type { ClientPageType, IClientsFilter } from "../../types";
 import { useQuery } from "@tanstack/react-query";
@@ -93,7 +93,7 @@ const ClientsList: FC<IProps> = ({ filter, clientPageType }) => {
     },
   ];
 
-  const { data, refetch, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["getBusinessPartners", filter, page],
     queryFn: async () =>
       await API.getBusinessPartners({
@@ -104,13 +104,8 @@ const ClientsList: FC<IProps> = ({ filter, clientPageType }) => {
       }),
   });
 
-  useEffect(() => {
-    refetch();
-  }, [filter]);
-
   const onChange = (value: any) => {
     setPage((value -= 1));
-    refetch();
   };
 
   return (

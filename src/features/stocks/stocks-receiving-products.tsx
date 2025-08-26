@@ -2,18 +2,24 @@ import { useState } from "react";
 import StocksFilter from "./components/StocksFilter";
 import StocksList from "./components/StocksList";
 import type { IStockFilter } from "./types";
-
-const defaultDate = {
-  startDate: undefined,
-  endDate: undefined,
-};
+import { ErrorBoundary } from "@/components";
+import { defaultStockFilterValue } from "./stock-products";
 
 const StocksReceivingProducts = () => {
-  const [filter, setFilter] = useState<IStockFilter>(defaultDate);
+  const [filter, setFilter] = useState<IStockFilter>(defaultStockFilterValue);
   return (
     <div>
-      <StocksFilter setFilter={setFilter} stockType="receiving-products" />
-      <StocksList filter={filter} stockType="receiving-products" />
+      <ErrorBoundary>
+        <StocksFilter
+          setFilter={setFilter}
+          stockType="receiving-products"
+          filter={filter}
+        />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <StocksList filter={filter} stockType="receiving-products" />
+      </ErrorBoundary>
     </div>
   );
 };

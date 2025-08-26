@@ -93,3 +93,24 @@
   width: 100% !important;
   min-width: max-content;
 }
+
+.hide-and-disabled {
+  border: none !important;
+  background-color: transparent !important;
+  color: $app-text-color !important;
+  border: 0 !important;
+}
+
+.ant-select-disabled {
+  .ant-select-selector {
+    color: $app-text-color !important;
+  }
+}
+.ant-picker-disabled {
+  input {
+    color: $app-text-color !important;
+  }
+}
+.ant-input-disabled {
+  color: $app-text-color !important;
+}

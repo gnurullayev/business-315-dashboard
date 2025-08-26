@@ -2,29 +2,28 @@ import { Form, Modal } from "antd";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { API } from "@/services/api";
-import SalesOrderHeader from "./SalesOrderHeader";
-import SalesOrderItemsTable from "./SalesOrderItemsTable";
-import SalesOrderFooter from "./SalesOrderFooter";
-import { mapSalesOrderPayload } from "../../lib/salesOrders";
+import PurchaseCreateHeader from "./PurchaseCreateHeader";
+import PurchaseCreateItemsTable from "./PurchaseCreateTable";
+import PurchaseCreateFooter from "./PurchaseCreateFooter";
 import "./styles.scss";
-import type { SalesFormType } from "../../types";
 import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import { ErrorBoundary } from "@/components";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store";
+import { mapPurchaseCreatePayload } from "../../lib/purchaseCreate";
+import { Currencies } from "@/enums";
+import dayjs from "dayjs";
 interface IProps {
-  salesType: SalesFormType;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  ordersRefetch: () => void;
+  purchaseRefetch: () => void;
 }
 
-const SalesOrderCreate: FC<IProps> = ({
+const PurchaseCreateCreate: FC<IProps> = ({
   open,
   setOpen,
-  salesType,
-  ordersRefetch,
+  purchaseRefetch,
 }) => {
   const [formInstance] = Form.useForm();
   const userInfo = useSelector((store: RootState) => store.userData);
@@ -33,44 +32,33 @@ const SalesOrderCreate: FC<IProps> = ({
     queryFn: async () => await API.getCurrencyRate(),
   });
   const { t } = useTranslation();
-  const {
-    mutate,
-    isPending,
-    data: onhandItem,
-  } = useMutation({
-    mutationKey: ["onhand-items"],
-    mutationFn: (params: any) => API.getOnHandItems(params),
-  });
 
   const handleClose = () => {
     setOpen(false);
     formInstance.resetFields();
   };
 
-  const { mutate: salesOrdersMutate, isPending: salesOrdersPending } =
+  const { mutate: purchaseCreatesMutate, isPending: purchaseCreatesPending } =
     useMutation({
-      mutationFn: (data: any) =>
-        salesType == "sales"
-          ? API.postSalesInvoices(data)
-          : API.postSalesOrders(data),
+      mutationFn: (data: any) => API.postPurchaseInvoices(data),
       onSuccess: () => {
-        toast.success(
-          t(salesType === "sales" ? "sales.Sotuv yaratildi" : "Order yaratildi")
-        );
+        toast.success(t("purchase.Xarid yaratildi"));
         formInstance.resetFields();
-        ordersRefetch();
+        purchaseRefetch();
         setOpen(false);
       },
     });
 
   useEffect(() => {
     formInstance.setFieldValue("dollarRate", docRate);
+    formInstance.setFieldValue("docCurrency", Currencies.USD);
+    formInstance.setFieldValue("date", dayjs());
   }, [docRate, formInstance]);
 
   const onFinished = (values: any) => {
-    const payload = mapSalesOrderPayload(values, salesType);
+    const payload = mapPurchaseCreatePayload(values);
 
-    salesOrdersMutate(payload);
+    purchaseCreatesMutate(payload);
   };
 
   return (
@@ -83,32 +71,28 @@ const SalesOrderCreate: FC<IProps> = ({
     >
       <Form
         form={formInstance}
-        className="order_create_form"
+        className="purchase_create_form"
         onFinish={onFinished}
         initialValues={{
           items: [{}],
           dollarRate: docRate,
           slpCode: userInfo.salesPersonCode,
+          docCurrency: "USD",
         }}
       >
         <ErrorBoundary>
-          <SalesOrderHeader />
+          <PurchaseCreateHeader />
         </ErrorBoundary>
 
-        <div className="order_create_form__main">
+        <div className="purchase_create_form__main">
           <ErrorBoundary>
-            <SalesOrderItemsTable
-              formInstance={formInstance}
-              mutate={mutate}
-              isPending={isPending}
-              onhandItem={onhandItem}
-            />
+            <PurchaseCreateItemsTable />
           </ErrorBoundary>
         </div>
 
         <ErrorBoundary>
-          <SalesOrderFooter
-            loading={salesOrdersPending}
+          <PurchaseCreateFooter
+            loading={purchaseCreatesPending}
             handleClose={handleClose}
           />
         </ErrorBoundary>
@@ -117,4 +101,4 @@ const SalesOrderCreate: FC<IProps> = ({
   );
 };
 
-export default SalesOrderCreate;
+export default PurchaseCreateCreate;

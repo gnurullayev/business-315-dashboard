@@ -24,14 +24,14 @@ interface IProps {
   salesType: SalesFormType;
 }
 
-const renameDocStatus = (_: any, key: string) => {
+const renameDocStatus = (t: any, key: string) => {
   switch (key) {
     case DocStatus.CLOSE:
-      return <Tag color="red">Yopiq</Tag>;
+      return <Tag color="red">{t("docStatus.C")}</Tag>;
     case DocStatus.OPEN:
-      return <Tag color="green">Ochiq</Tag>;
+      return <Tag color="green">{t("docStatus.O")}</Tag>;
     default:
-      return <Tag color="blue">Barchasi</Tag>;
+      return <Tag color="blue">{t("docStatus.A")}</Tag>;
   }
 };
 
@@ -128,13 +128,8 @@ const SalesList: FC<IProps> = ({ filter, salesType }) => {
       ),
   });
 
-  useEffect(() => {
-    refetch();
-  }, [filter]);
-
   const onChange = (value: any) => {
     setPage((value -= 1));
-    refetch();
   };
 
   return (

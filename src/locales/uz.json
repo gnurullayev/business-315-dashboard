@@ -6,6 +6,20 @@
     "O":"Ochiq",
     "A":"Barchasi"
   },
+  "navigation":{
+    "salesOrders":"Sotuvlar buyurtmasi",
+    "sales":"Sotuvlar",
+    "canceledSales":"Bekor qilingan sotuvlar",
+    "salesReports":"Sotuv hisobotlari",
+    "purchaseInvoices":"Xaridlar",
+    "receivingProducts":"Yo'ldagi tovorlar",
+    "incomingPayments":"Kirim to'lovlari",
+    "outgoingPayments":"Chiqim to'lovlari",
+    "stockProducts":"Tovar jo'natish",
+    "incomingProducts":"Kiruvchi tovarlar",
+    "stockReceivingProducts":"Kelgan tovarlar",
+    "deliveredProducts":"Yetkazib berilgan tovarlar"
+  },
   "general": {
     "dashboard":"Asosiy",
     "sales":"Sotuvlar",

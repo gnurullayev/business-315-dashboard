@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./styles.scss";
 import { ErrorBoundary } from "@/components";
 import ClientsFilter from "../clients/components/ClientsFilter";
 import ClientsList from "../clients/components/ClientsList";

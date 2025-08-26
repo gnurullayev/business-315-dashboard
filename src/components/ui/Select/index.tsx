@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { Form, Select, Tooltip } from "antd";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { BaseSelectRef } from "rc-select";
 import type { DefaultOptionType } from "rc-select/lib/Select";
 
@@ -32,51 +32,49 @@ const UniversalSelect = forwardRef<BaseSelectRef, any>(
       isDefaultValue = false,
       manualDefaultValue = "",
       minWidth,
+      requestQueryKey = "",
       reload,
+      filteredOptionsCallback,
       ...props
     },
     ref
   ) => {
+    const [searchValue, setSearchValue] = useState<string>("");
     const [options, setOptions] = useState<DefaultOptionType[]>(manualOptions);
-    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const [filteredOptions, setFilteredOptions] = useState<
+      DefaultOptionType[] | null
+    >(null);
 
-    const { mutate, isPending } = useMutation({
-      mutationKey: [params],
-      mutationFn: async (params) => {
+    const { data, isFetching, refetch } = useQuery({
+      queryKey: [
+        "universal-select",
+        requestQueryKey,
+        params,
+        searchValue,
+        reload,
+      ],
+      queryFn: async () => {
         if (!request) return [];
-        return await request(params);
+        const res = await request({
+          ...params,
+          ...(searchValue ? { [paramKey]: searchValue } : {}),
+        });
+        return res;
       },
-      onSuccess: (res: any) => {
-        if (res[resDataKey as string]) {
-          setOptions(
-            res[resDataKey].map((item: any) => ({
-              value: item[valueKey],
-              label: item[labelKey],
-              itemObj: item,
-            }))
-          );
-        }
-      },
+      enabled: !!request,
     });
 
     useEffect(() => {
-      if (request) {
-        mutate(params);
+      if (data && resDataKey && data[resDataKey]) {
+        setOptions(
+          data[resDataKey].map((item: any) => ({
+            value: item[valueKey],
+            label: item[labelKey],
+            itemObj: item,
+          }))
+        );
       }
-    }, []);
-
-    const onSearch = (value: any) => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-
-      timerRef.current = setTimeout(() => {
-        mutate({
-          [paramKey]: value,
-          ...params,
-        });
-      }, 500);
-    };
+    }, [data]);
 
     useEffect(() => {
       if (manualOptions?.length) {
@@ -85,10 +83,24 @@ const UniversalSelect = forwardRef<BaseSelectRef, any>(
     }, [manualOptions]);
 
     useEffect(() => {
-      if (request && reload > 0) {
-        mutate(params);
+      if (filteredOptionsCallback && options) {
+        const newOptions = options?.filter((option: any) => {
+          return filteredOptionsCallback(option);
+        });
+        setFilteredOptions(newOptions);
       }
-    }, [reload]);
+    }, [filteredOptionsCallback, options]);
+
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const onSearch = (value: string) => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      timerRef.current = setTimeout(() => {
+        setSearchValue(value);
+        refetch();
+      }, 500);
+    };
 
     return (
       <Form.Item
@@ -116,13 +128,13 @@ const UniversalSelect = forwardRef<BaseSelectRef, any>(
           showSearch={showSearch}
           placeholder={placeholder}
           optionFilterProp="label"
-          loading={isPending}
+          loading={isFetching}
           filterSort={(optionA, optionB) =>
             (optionA?.label as string)
               ?.toLowerCase()
               .localeCompare((optionB?.label as string)?.toLowerCase())
           }
-          options={options}
+          options={filteredOptions ? filteredOptions : options}
           onSearch={onSearch}
           className={className}
           defaultValue={manualDefaultValue}

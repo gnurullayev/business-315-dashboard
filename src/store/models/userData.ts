@@ -1,22 +1,17 @@
 import { createModel } from "@rematch/core";
 import type { RootModel } from ".";
+import type { User } from "@/types/user";
 
-interface UserDataState {
-  user: any;
-}
-
-const initialState: UserDataState = {
-  user: null,
-};
+const initialState: User = {} as User;
 
 export const userData = createModel<RootModel>()({
   state: initialState,
   reducers: {
     changeUserData(state, payload: any) {
-      return { ...state, user: payload };
+      return { ...state, ...payload };
     },
-    removeUser(state) {
-      return { ...state, user: null };
+    removeUser() {
+      return initialState;
     },
   },
   effects: (dispatch) => ({

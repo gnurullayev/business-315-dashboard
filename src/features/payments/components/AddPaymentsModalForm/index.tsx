@@ -1,14 +1,17 @@
 import { Button, DatePicker, Form, Input, Modal } from "antd";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { API } from "@/services/api";
-import { type Dispatch, type FC, type SetStateAction } from "react";
+import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import { UniversalSelect } from "@/components";
 import TextArea from "antd/es/input/TextArea";
 import "./styles.scss";
 import type { PaymentsType } from "../../types";
 import { Currencies } from "@/enums";
+import dayjs from "dayjs";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store";
 
 const currencyOptions = [
   { value: Currencies.UZS, label: "UZS" },
@@ -30,27 +33,54 @@ const AddPaymentsModalForm: FC<IProps> = ({
 }) => {
   const [formInstance] = Form.useForm();
   const { t } = useTranslation();
+  const userInfo = useSelector((store: RootState) => store.userData);
+  const { data: docRate } = useQuery({
+    queryKey: ["getCurrencyRate"],
+    queryFn: async () => await API.getCurrencyRate(),
+  });
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["post-business-partners"],
-    mutationFn: (data: any) => API.postBusinessPartners(data),
+    mutationFn: (data: any) => {
+      if (paymentsType === "incoming") return API.postIncomingPayment(data);
+      return API.postVendorPayment(data);
+    },
     onSuccess: () => {
-      toast.success("Client yaratildi");
+      toast.success(
+        paymentsType === "incoming"
+          ? "Kirim to'lov yaratildi"
+          : "Chiqim to'lov yaratildi"
+      );
       formInstance.resetFields();
       setReload((prev) => prev + 1);
       setOpen(false);
     },
-    onError: (err: any) => {
-      if (err?.response?.data?.message) {
-        toast.error(`Xatolik yuz berdi: ${err?.response?.data?.message}`);
-      } else {
-        toast.error(`Xatolik yuz berdi: ${err.message}`);
-      }
-    },
   });
 
+  useEffect(() => {
+    if (open) {
+      formInstance.setFieldValue("docRate", docRate);
+      formInstance.setFieldValue("docCurrency", Currencies.USD);
+      formInstance.setFieldValue("docDate", dayjs());
+      if (paymentsType === "outgoing") {
+        formInstance.setFieldValue("cardCode", userInfo.u_CashAccount);
+      } else {
+        formInstance.setFieldValue("cashAccount", userInfo.u_CashAccount);
+      }
+    }
+  }, [open, formInstance]);
+
   const onFinished = (values: any) => {
-    mutate(values);
+    const data = {
+      cashAccount: values.cashAccount,
+      docDate: dayjs(values.docDate).format("YYYY-MM-DD"),
+      cardCode: values.cardCode,
+      docCurrency: values.docCurrency,
+      cashSum: values.cashSum,
+      remarks: values.remarks ? values.remarks : "",
+      docRate: values.docRate ? values.docRate : 0,
+      docType: paymentsType === "incoming" ? "C" : "A",
+    };
+    mutate(data);
   };
 
   const handleClose = () => {
@@ -85,11 +115,10 @@ const AddPaymentsModalForm: FC<IProps> = ({
         <div className="add_payments_form__inner">
           <div className="add_payments_form__item_box_first">
             <Form.Item
-              name="dollarRate"
+              name="docRate"
               label={t("general.dollarRate")}
               layout="vertical"
               rules={[
-                { required: true, message: t("general.enterInformation") },
                 { pattern: /^[0-9]+$/, message: t("general.enterOnlyNumber") },
               ]}
             >
@@ -109,10 +138,12 @@ const AddPaymentsModalForm: FC<IProps> = ({
             />
 
             <Form.Item
-              name={"date"}
+              name={"docDate"}
               label={t("general.date")}
               layout="vertical"
-              rules={[]}
+              rules={[
+                { required: true, message: t("general.enterInformation") },
+              ]}
             >
               <DatePicker
                 placeholder={t("general.choose")}
@@ -123,73 +154,84 @@ const AddPaymentsModalForm: FC<IProps> = ({
 
           <div className="add_payments_form__item_box">
             {paymentsType === "incoming" && (
-              <UniversalSelect
-                name="cardCode"
-                label={t("sales.customerName")}
-                layout="vertical"
-                placeholder={t("general.choose")}
-                required
-                params={{ cardType: "C" }}
-                request={API.getBusinessPartners}
-                paramKey="cardName"
-                resDataKey="data"
-                valueKey="cardCode"
-                labelKey="cardName"
-                showSearch
-                minWidth="200px"
-                className="order_create_form__card_code"
-                rules={[
-                  { required: true, message: t("general.enterInformation") },
-                ]}
-              />
+              <>
+                <UniversalSelect
+                  name="cardCode"
+                  label={t("sales.customerName")}
+                  layout="vertical"
+                  placeholder={t("general.choose")}
+                  required
+                  params={{ cardType: "C" }}
+                  request={API.getBusinessPartners}
+                  requestQueryKey={"getBusinessPartners"}
+                  paramKey="cardName"
+                  resDataKey="data"
+                  valueKey="cardCode"
+                  labelKey="cardName"
+                  showSearch
+                  minWidth="200px"
+                  className="add_payments_form__card_code"
+                  rules={[
+                    { required: true, message: t("general.enterInformation") },
+                  ]}
+                />
+
+                <Form.Item
+                  name="cashAccount"
+                  label={t("payments.incomingCash")}
+                  layout="vertical"
+                >
+                  <Input disabled />
+                </Form.Item>
+              </>
             )}
 
-            <UniversalSelect
-              name="incomingCash"
-              label={t("payments.incomingCash")}
-              layout="vertical"
-              placeholder={t("general.choose")}
-              required
-              params={{ cardType: "C" }}
-              request={API.getBusinessPartners}
-              paramKey="cardName"
-              resDataKey="data"
-              valueKey="cardCode"
-              labelKey="cardName"
-              showSearch
-              minWidth="200px"
-              className="order_create_form__card_code"
-              disabled={paymentsType === "incoming"}
-              rules={[
-                { required: true, message: t("general.enterInformation") },
-              ]}
-            />
-
             {paymentsType === "outgoing" && (
-              <UniversalSelect
-                name="outgoingCash"
-                label={t("payments.outgoingCash")}
-                layout="vertical"
-                placeholder={t("general.choose")}
-                required
-                params={{ cardType: "C" }}
-                request={API.getBusinessPartners}
-                paramKey="cardName"
-                resDataKey="data"
-                valueKey="cardCode"
-                labelKey="cardName"
-                showSearch
-                minWidth="200px"
-                className="order_create_form__card_code"
-                rules={[
-                  { required: true, message: t("general.enterInformation") },
-                ]}
-              />
+              <>
+                <UniversalSelect
+                  name="cardCode"
+                  label={t("payments.incomingCash")}
+                  layout="vertical"
+                  placeholder={t("general.choose")}
+                  required
+                  paramKey="acctName"
+                  request={API.getCashAccounts}
+                  requestQueryKey={"incomingCashAccount"}
+                  resDataKey="data"
+                  valueKey="acctCode"
+                  labelKey="acctName"
+                  showSearch
+                  minWidth="200px"
+                  className="add_payments_form__card_code"
+                  rules={[
+                    { required: true, message: t("general.enterInformation") },
+                  ]}
+                />
+                <UniversalSelect
+                  name="cashAccount"
+                  label={t("payments.outgoingCash")}
+                  layout="vertical"
+                  placeholder={t("general.choose")}
+                  required
+                  paramKey="acctName"
+                  request={API.getCashAccounts}
+                  requestQueryKey={"outgoingCashAccount"}
+                  resDataKey="data"
+                  valueKey="acctCode"
+                  labelKey="acctName"
+                  showSearch
+                  minWidth="200px"
+                  className="add_payments_form__card_code"
+                  rules={[
+                    { required: true, message: t("general.enterInformation") },
+                  ]}
+                />
+              </>
             )}
           </div>
 
           <Form.Item
-            name="amount"
+            name="cashSum"
             label={t("general.amount")}
             layout="vertical"
             rules={[
@@ -202,7 +244,7 @@ const AddPaymentsModalForm: FC<IProps> = ({
 
           <div className="add_payments_form__comment">
             <Form.Item
-              name={"comment"}
+              name={"remarks"}
               label={t("general.comment")}
               layout="vertical"
             >
