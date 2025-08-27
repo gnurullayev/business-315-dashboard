@@ -13,6 +13,8 @@ import {
   orderApi,
 } from "../../lib/salesOrders";
 import type { SalesFormType } from "../../types";
+import { useNavigate } from "react-router-dom";
+import { routes } from "@/constants/routes";
 
 interface IProps {
   handleClose: () => void;
@@ -79,15 +81,34 @@ const SalesOrderEditOrShowFooter: FC<IProps> = ({
     }
   };
 
+  const handlePrint = (key: "A4" | "micro" | "print-warehouse") => {
+    let url = "";
+    switch (key) {
+      case "A4":
+        url = `${routes.PDF_ORDER_PAGE}/${salesType}/${showOrder?.docEntry}`;
+        break;
+      case "print-warehouse":
+        url = `${routes.PDF_WRH_PDF_PAGE}/${salesType}/${showOrder?.docEntry}`;
+        break;
+      case "micro":
+        url = `${routes.PDF_CHEQUE_PAGE}/${salesType}/${showOrder?.docEntry}`;
+        break;
+    }
+
+    if (url) {
+      window.open(url, "_blank");
+    }
+  };
+
   return (
     <div className="order_create_form__footer">
-      <Button type="default" onClick={handleClose}>
+      <Button type="default" onClick={() => handlePrint("A4")}>
         {t("sales.printA4")}
       </Button>
-      <Button type="default" onClick={handleClose}>
+      <Button type="default" onClick={() => handlePrint("print-warehouse")}>
         {t("sales.printWarehouse")}
       </Button>
-      <Button type="default" onClick={handleClose}>
+      <Button type="default" onClick={() => handlePrint("micro")}>
         {t("sales.printMicro")}
       </Button>
 

@@ -20,6 +20,9 @@ import PurchasesLayoutPage from "@/pages/purchases";
 import PaymentsLayoutPage from "@/pages/payments";
 import StocksLayoutPage from "@/pages/stocks";
 import StocksDeliveredProducts from "@/features/stocks/stocks-delivered-products";
+import PdfChequePage from "@/pages/pdf-cheque";
+import PdfOderPage from "@/pages/pdf-order-page";
+import PdfWrhPdfPage from "@/pages/pdf-wrhpdf";
 
 export const publicRoutes = [
   {
@@ -85,5 +88,20 @@ export const privateRoutes = [
   {
     path: routes.CLIENTS,
     element: Clients,
+  },
+
+  {
+    path: `${routes.PDF_CHEQUE_PAGE}/:key/:id`,
+    element: PdfChequePage,
+  },
+
+  {
+    path: `${routes.PDF_ORDER_PAGE}/:key/:id`,
+    element: PdfOderPage,
+  },
+
+  {
+    path: `${routes.PDF_WRH_PDF_PAGE}/:key/:id`,
+    element: PdfWrhPdfPage,
   },
 ];

@@ -62,15 +62,20 @@ export const API = {
     axiosInstance.get("businesspartners", { params }).then((res) => res.data),
   getBusinessPartnersGroups: () =>
     axiosInstance.get("businesspartners/groups").then((res) => res.data),
-  getCurrencyRate: () =>
-    axiosInstance.get("currencies/get-currency-rate").then((res) => res.data),
   getWarehouses: () => axiosInstance.get("warehouses").then((res) => res.data),
   getBusinessPartnersInfo: (params?: any) =>
     axiosInstance
       .get("businesspartners/info", { params })
       .then((res) => res.data),
 
-  //
+  //CURRENCIES
+  getCurrencyRate: () =>
+    axiosInstance.get("currencies/get-currency-rate").then((res) => res.data),
+  getCurrencyRateByPeriod: (params: any) =>
+    axiosInstance
+      .get("currencies/get-currency-rate-by-period", { params })
+      .then((res) => res.data),
+
   //SALES
   getSalesOrders: (params?: any) =>
     axiosInstance.get("sales/orders", { params }).then((res) => res.data),

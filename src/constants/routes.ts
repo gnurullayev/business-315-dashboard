@@ -25,4 +25,8 @@ export const routes = {
   STOCKS_INCOMING_PRODUCTS: "incoming-products",
   STOCKS_RECEIVING_PRODUCTS: "receiving-products",
   STOCKS_DELIVERED_PRODUCTS: "delivered-products",
+
+  PDF_CHEQUE_PAGE: "/pdf/cheque",
+  PDF_ORDER_PAGE: "/pdf/orderpage",
+  PDF_WRH_PDF_PAGE: "/pdf/wrhpdf",
 };

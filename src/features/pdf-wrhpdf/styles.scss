@@ -1,0 +1,30 @@
+.pdf-wrh-pdf-info {
+  width: 100%;
+  padding: 20px;
+  font-size: 14px;
+
+  .pdf-wrh-pdf-info-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .pdf-wrh-pdf-info-footer {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+  .ant-table {
+    margin-top: 10px;
+  }
+
+  &__table_warehouse {
+    border-bottom: 1px solid red;
+  }
+}

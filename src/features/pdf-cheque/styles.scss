@@ -1,0 +1,35 @@
+.pdf-cheque-info {
+  width: 100%;
+  padding: 20px;
+  font-size: 14px;
+
+  .company {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .pdf-cheque-info-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .pdf-cheque-info-footer {
+    margin-top: 20px;
+    text-align: right;
+
+    p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+  }
+
+  .ant-table {
+    margin-top: 10px;
+  }
+}

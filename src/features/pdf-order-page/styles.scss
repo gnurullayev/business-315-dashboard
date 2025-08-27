@@ -1,0 +1,59 @@
+.pdf-order-page-info {
+  width: 100%;
+  padding: 20px;
+  font-size: 14px;
+
+  .company {
+    text-align: center;
+    font-weight: bold;
+    color: #1a5edc;
+    margin-bottom: 20px;
+  }
+
+  .pdf-order-page-info-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+
+    .left {
+      .phone-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 5px;
+
+        .phone-icon {
+          font-size: 20px;
+          color: #fff;
+          background: #28c243; // yashil
+          padding: 5px;
+          border-radius: 6px;
+        }
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .right {
+      text-align: right;
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+
+  .note {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  .comment {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+}

@@ -54,6 +54,8 @@ const ClientModalForm: FC<IProps> = ({
   });
 
   const onFinished = (values: any) => {
+    console.log(values);
+
     mutate(values);
   };
 
@@ -93,7 +95,7 @@ const ClientModalForm: FC<IProps> = ({
           </Form.Item>
 
           <Form.Item
-            name="cardFName"
+            name="CardForeignName"
             label={t("clients.responsiblePerson")}
             layout="vertical"
             rules={[{ required: true, message: t("general.enterInformation") }]}
@@ -106,7 +108,7 @@ const ClientModalForm: FC<IProps> = ({
           </Form.Item>
 
           <Form.Item
-            name="licTradNum"
+            name="FederalTaxID"
             label={t("clients.inn")}
             layout="vertical"
             rules={[{ required: true, message: t("general.enterInformation") }]}
