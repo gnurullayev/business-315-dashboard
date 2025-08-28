@@ -4,13 +4,14 @@ import ClientsFilter from "../clients/components/ClientsFilter";
 import ClientsList from "../clients/components/ClientsList";
 import type { IClientsFilter } from "../clients/types";
 
-const defaultDate = {
+const defaultData = {
   groupCode: undefined,
   cardName: undefined,
 };
 
 const SalesReports = () => {
-  const [filter, setFilter] = useState<IClientsFilter>(defaultDate);
+  const [filter, setFilter] = useState<IClientsFilter>(defaultData);
+
   return (
     <div className="page_layout">
       <div className="clients_info">

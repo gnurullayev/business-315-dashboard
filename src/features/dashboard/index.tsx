@@ -4,17 +4,17 @@ import Statistics from "./components/Statistics";
 import "./styles.scss";
 import dayjs from "dayjs";
 
-const defaultDate = {
+const defaultData = {
   startDate: dayjs().format("YYYY-MM-DD"),
   endDate: dayjs().format("YYYY-MM-DD"),
 };
 
 const DashboardComponent = () => {
-  const [filter, setFilter] = useState(defaultDate);
+  const [filter, setFilter] = useState(defaultData);
 
   return (
     <div className="dashboard">
-      <DashboardFilter setFilter={setFilter} />
+      <DashboardFilter setFilter={setFilter} filter={filter} />
       <Statistics filter={filter} />
     </div>
   );

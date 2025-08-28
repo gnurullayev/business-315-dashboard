@@ -4,7 +4,7 @@ import SalesOrdersFilter from "./components/SalesOrdersFilter";
 import SalesList from "./components/SalesList";
 import { ErrorBoundary } from "@/components";
 
-const defaultDate = {
+export const defaultSalesData = {
   startDate: undefined,
   endDate: undefined,
   cardName: undefined,
@@ -13,7 +13,7 @@ const defaultDate = {
 };
 
 const CanceledSales = () => {
-  const [filter, setFilter] = useState<ISalesOrdersFilter>(defaultDate);
+  const [filter, setFilter] = useState<ISalesOrdersFilter>(defaultSalesData);
 
   return (
     <>

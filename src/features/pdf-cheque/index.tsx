@@ -2,7 +2,7 @@ import { Table } from "antd";
 import "./styles.scss";
 import Loader from "@/components/Loader";
 import { ErrorBoundary } from "@/components";
-import type { IDocumentLines } from "@/types/order";
+import type { IDocumentLines, IOrder } from "@/types/order";
 import { usePdfPrint } from "./hooks/usePdfPrint";
 
 const PdfChequeInfo = () => {
@@ -55,38 +55,46 @@ const PdfChequeInfo = () => {
     },
   ];
 
+  let totalQuantity = 0;
+
+  if (data?.length && data[0].documentLines) {
+    data[0].documentLines.forEach((docLine) => {
+      totalQuantity += docLine.quantity;
+    });
+  }
+
   return (
     <div className="pdf-cheque-info">
       <h2 className="company">OOO "MEGA AUTO PARTS SERVICE"</h2>
 
       {isLoading &&
       currencyRateLoading &&
-      !(data as any)?.data?.length &&
-      !(currencyRate as any)?.data?.length ? (
+      !(data as any)?.length &&
+      !(currencyRate as any)?.length ? (
         <Loader />
       ) : (
         <>
           <div className="pdf-cheque-info-header">
             <div>
               <p>
-                <b>Тел :</b> {data?.data[0].cellular}
+                <b>Тел :</b> 983004547
               </p>
               <p>
-                <b>Клиент :</b> {data?.data[0].cardName}
+                <b>Клиент :</b> {data && data[0].cardName}
               </p>
               <p>
-                <b>Продавец :</b> {data?.data[0].slpName}
+                <b>Продавец :</b> {data && data[0].slpName}
               </p>
             </div>
             <div className="right">
               <p>
                 <b>Курс :</b>{" "}
-                {!isNaN(currencyRate.data[0].rate)
-                  ? Number(currencyRate.data[0].rate)
+                {!isNaN(currencyRate[0].rate)
+                  ? Number(currencyRate[0].rate)
                   : ""}
               </p>
               <p>
-                <b>Дата :</b> {currencyRate.data[0].rateDate}
+                <b>Дата :</b> {currencyRate[0].rateDate}
               </p>
             </div>
           </div>
@@ -95,15 +103,15 @@ const PdfChequeInfo = () => {
             <Table
               bordered
               columns={columns}
-              dataSource={data?.data?.length ? data.data[0].documentLines : []}
+              dataSource={data?.length ? data[0].documentLines : []}
               pagination={false}
-              summary={(data) => (
+              summary={() => (
                 <Table.Summary.Row>
                   <Table.Summary.Cell index={0} colSpan={2}>
                     <b>Итог (кол)</b>
                   </Table.Summary.Cell>
                   <Table.Summary.Cell index={1}>
-                    {data[0].quantity}
+                    {totalQuantity}
                   </Table.Summary.Cell>
                 </Table.Summary.Row>
               )}
@@ -114,12 +122,12 @@ const PdfChequeInfo = () => {
           <div className="pdf-cheque-info-footer">
             <p>
               <b>Всего (UZS) :</b>{" "}
-              {!isNaN(currencyRate.data[0].rate)
-                ? data?.data[0].docTotal * Number(currencyRate.data[0].rate)
+              {!isNaN(currencyRate[0].rate)
+                ? (data as IOrder[])[0].docTotal * Number(currencyRate[0].rate)
                 : 0}
             </p>
             <p>
-              <b>Всего (USD) :</b> {data?.data[0].docTotal}
+              <b>Всего (USD) :</b> {(data as IOrder[])[0].docTotal}
             </p>
           </div>
         </>

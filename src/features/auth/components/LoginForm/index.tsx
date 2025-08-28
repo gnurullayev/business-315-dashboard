@@ -57,10 +57,6 @@ const LoginForm = () => {
     });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
   return (
     <StyledForm>
       <Modal
@@ -76,12 +72,7 @@ const LoginForm = () => {
       </Modal>
       <div className="login_form">
         <div className="login_form__inner">
-          <Form
-            form={form}
-            name="login"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-          >
+          <Form form={form} name="login" onFinish={onFinish}>
             <Form.Item
               name="username"
               rules={[

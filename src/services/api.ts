@@ -111,6 +111,10 @@ export const API = {
     axiosInstance.get("items/items", { params }).then((res) => res.data),
   getOnHandItems: (params: any) =>
     axiosInstance.get("items/onhand-items", { params }).then((res) => res.data),
+  getItemsGroups: () =>
+    axiosInstance.get("items/groups").then((res) => res.data),
+
+  //
 
   //PAYMENT
   postIncomingPaymentBatch: (data: any) =>

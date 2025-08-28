@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type FC } from "react";
+import { useMemo, useState, type FC } from "react";
 import type { TableColumnsType } from "antd";
 import { Button, Table } from "antd";
 import { useQuery } from "@tanstack/react-query";

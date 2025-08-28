@@ -13,7 +13,6 @@ import {
   orderApi,
 } from "../../lib/salesOrders";
 import type { SalesFormType } from "../../types";
-import { useNavigate } from "react-router-dom";
 import { routes } from "@/constants/routes";
 
 interface IProps {

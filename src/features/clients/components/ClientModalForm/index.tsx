@@ -54,8 +54,6 @@ const ClientModalForm: FC<IProps> = ({
   });
 
   const onFinished = (values: any) => {
-    console.log(values);
-
     mutate(values);
   };
 

@@ -1,5 +1,5 @@
 export interface IReportsFilter {
-  cardName: string | undefined;
-  startDate: string | undefined;
-  endDate: string | undefined;
+  itemName: string | undefined;
+  warehouseName: string | undefined;
+  groupCode: string | undefined;
 }

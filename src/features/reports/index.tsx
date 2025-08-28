@@ -5,14 +5,16 @@ import ReportsList from "./components/ReportsList";
 import { ErrorBoundary } from "@/components";
 import "./styles.scss";
 
-const defaultDate = {
-  startDate: undefined,
-  endDate: undefined,
-  cardName: undefined,
+const defaultReportsFilterData = {
+  itemName: undefined,
+  warehouseName: undefined,
+  groupCode: undefined,
 };
 
 const ReportsInfo = () => {
-  const [filter, setFilter] = useState<IReportsFilter>(defaultDate);
+  const [filter, setFilter] = useState<IReportsFilter>(
+    defaultReportsFilterData
+  );
   return (
     <div className="page_layout">
       <div className="reports_info">

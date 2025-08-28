@@ -3,17 +3,10 @@ import SalesOrdersFilter from "./components/SalesOrdersFilter";
 import SalesOrdersList from "./components/SalesOrdersList";
 import type { ISalesOrdersFilter } from "./types";
 import { ErrorBoundary } from "@/components";
-
-const defaultDate = {
-  startDate: undefined,
-  endDate: undefined,
-  cardName: undefined,
-  slpCode: undefined,
-  docStatus: undefined,
-};
+import { defaultSalesData } from "./canceled-sales";
 
 const SalesOrders = () => {
-  const [filter, setFilter] = useState<ISalesOrdersFilter>(defaultDate);
+  const [filter, setFilter] = useState<ISalesOrdersFilter>(defaultSalesData);
 
   return (
     <>

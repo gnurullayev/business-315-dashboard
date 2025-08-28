@@ -1,5 +1,3 @@
-export const CRM = "/crm";
-
 export const routes = {
   LOGIN: "/",
   DASHBOARD: `/dashboard`,

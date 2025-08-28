@@ -3,12 +3,14 @@ import type { FilterField } from "@/components/Filter/type";
 import dayjs from "dayjs";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
+import type { IDashboardFilter } from "../../types";
 
 interface IProps {
   setFilter: Dispatch<SetStateAction<any>>;
+  filter: IDashboardFilter;
 }
 
-const DashboardFilter: FC<IProps> = ({ setFilter }) => {
+const DashboardFilter: FC<IProps> = ({ setFilter, filter }) => {
   const { t } = useTranslation();
   const fields: FilterField[] = [
     {
@@ -35,17 +37,16 @@ const DashboardFilter: FC<IProps> = ({ setFilter }) => {
       });
   };
 
+  const formValues: any = {
+    ...filter,
+  };
+
+  if (filter?.startDate) formValues.startDate = dayjs(filter?.startDate);
+  if (filter?.endDate) formValues.endDate = dayjs(filter?.startDate);
+
   return (
     <div>
-      <Filter
-        fields={fields}
-        onFilter={handleFilter}
-        // extraButton={
-        //   <Button type="primary" danger>
-        //     Buyurtma qo‘shish
-        //   </Button>
-        // }
-      />
+      <Filter fields={fields} onFilter={handleFilter} formValues={formValues} />
     </div>
   );
 };

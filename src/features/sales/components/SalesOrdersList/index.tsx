@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from "react";
+import { useState, type FC } from "react";
 import type { TableColumnsType } from "antd";
 import { Button, Table, Tag } from "antd";
 import type { ISalesOrdersFilter, SalesFormType } from "../../types";

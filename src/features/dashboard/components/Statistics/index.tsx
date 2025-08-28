@@ -1,4 +1,4 @@
-import { useEffect, useMemo, type FC } from "react";
+import { useMemo, type FC } from "react";
 import "./styles.scss";
 import { CircleDollarSign, ShoppingCart } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";

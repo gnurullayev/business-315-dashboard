@@ -5,13 +5,13 @@ import ClientsList from "./components/ClientsList";
 import "./styles.scss";
 import { ErrorBoundary } from "@/components";
 
-const defaultDate = {
+const defaultData = {
   groupCode: undefined,
   cardName: undefined,
 };
 
 const ClientsInfo = () => {
-  const [filter, setFilter] = useState<IClientsFilter>(defaultDate);
+  const [filter, setFilter] = useState<IClientsFilter>(defaultData);
   return (
     <div className="page_layout">
       <div className="clients_info">

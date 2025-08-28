@@ -12,8 +12,6 @@ const DefaultLayout: React.FC<IProps> = ({ children }) => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
 
-  console.log(path);
-
   return (
     <>
       {path !== "pdf" ? (

@@ -1,4 +1,5 @@
 import { API } from "@/services/api";
+import type { IOrder } from "@/types/order";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -41,5 +42,17 @@ export const usePdfPrint = () => {
     }
   }, [data, currencyRate]);
 
-  return { data, isLoading, currencyRate, currencyRateLoading };
+  const retData: {
+    data: undefined | IOrder[];
+    isLoading: boolean;
+    currencyRate: any;
+    currencyRateLoading: boolean;
+  } = {
+    data: data?.data,
+    isLoading,
+    currencyRate: currencyRate?.data,
+    currencyRateLoading,
+  };
+
+  return retData;
 };

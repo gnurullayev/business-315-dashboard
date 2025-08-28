@@ -129,7 +129,9 @@
     "defaultWarehouse": "Standart ombor",
     "rawMaterialWarehouse": "Xom ashyo ombori",
     "mainWarehouse":"Asosiy ombor 1",
-    "groupName": "Guruh nomi"
+    "groupName": "Guruh nomi",
+    "searchByWarehouse":"Ombor bo'yicha qidirish",
+    "searchByGroup":"Guruh bo'yicha qidirish"
   },
   "clients":{
     "addClient":"Mijoz qo'shish",

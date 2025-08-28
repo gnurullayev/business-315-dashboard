@@ -5,7 +5,6 @@ import "./styles.scss";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { dispatch, type RootState } from "@/store";
 import { useSelector } from "react-redux";
-import type { RootModel } from "@/store/models";
 
 const { Header } = Layout;
 interface PageHeaderProps {
