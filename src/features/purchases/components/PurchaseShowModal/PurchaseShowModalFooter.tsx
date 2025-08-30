@@ -9,9 +9,14 @@ import { toast } from "react-toastify";
 interface IProps {
   handleClose: () => void;
   docEntry: number;
+  showPurchase?: any;
 }
 
-const PurchaseShowModalFooter: FC<IProps> = ({ handleClose, docEntry }) => {
+const PurchaseShowModalFooter: FC<IProps> = ({
+  handleClose,
+  docEntry,
+  showPurchase,
+}) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { mutate, isPending } = useMutation({
@@ -40,7 +45,12 @@ const PurchaseShowModalFooter: FC<IProps> = ({ handleClose, docEntry }) => {
       >
         {t("general.cancel")}
       </Button>
-      <PaymentModalForm open={open} setOpen={setOpen} setReload={() => null} />
+      <PaymentModalForm
+        showPurchase={showPurchase}
+        open={open}
+        setOpen={setOpen}
+        setReload={() => null}
+      />
     </div>
   );
 };

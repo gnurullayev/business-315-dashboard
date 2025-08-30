@@ -64,6 +64,7 @@ const PurchaseShowModal: FC<IProps> = ({
           <SalesOrderFooter
             handleClose={handleClose}
             docEntry={showPurchase?.docEntry as number}
+            showPurchase={showPurchase}
           />
         )}
       </Form>

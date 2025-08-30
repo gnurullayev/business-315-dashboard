@@ -17,7 +17,7 @@ interface IProps {
   open: boolean;
   setOpen: (val: boolean) => void;
   setReload: (cb: (prev: number) => number) => void;
-  showOrder?: IOrder;
+  showPurchase?: IOrder;
   paymentSuccessShowFn?: (a: string | null) => void;
   purchasesOrSales?: PurchasesOrSalesType;
 }
@@ -26,7 +26,7 @@ const PaymentModalForm = ({
   open,
   setOpen,
   setReload,
-  showOrder,
+  showPurchase,
   paymentSuccessShowFn,
   purchasesOrSales = "purchase",
 }: IProps) => {
@@ -39,7 +39,7 @@ const PaymentModalForm = ({
     queryFn: async () => await API.getCurrencyRate(),
   });
   const { mutate, isPending } = usePaymentMutation({
-    showOrder,
+    showOrder: showPurchase,
     paymentSuccessShowFn,
     formInstance,
     setReload,
@@ -53,11 +53,11 @@ const PaymentModalForm = ({
       return;
     }
 
-    if (showOrder) {
+    if (showPurchase) {
       mutate({
-        cardCode: showOrder.cardCode,
+        cardCode: showPurchase.cardCode,
         docDate: values.date,
-        docEntry: showOrder.docEntry,
+        docEntry: showPurchase.docEntry,
         docRate: values.docRate,
         payments,
       });
@@ -84,7 +84,7 @@ const PaymentModalForm = ({
   };
 
   useEffect(() => {
-    if (showOrder) {
+    if (showPurchase) {
       formInstance.setFieldsValue({
         docRate: docRate ?? 0,
         u_CashAccount: userInfo.u_CashAccount,
@@ -93,14 +93,14 @@ const PaymentModalForm = ({
         totalAmount: 0,
       });
     }
-  }, [showOrder, docRate, userInfo, formInstance]);
+  }, [showPurchase, docRate, userInfo, formInstance]);
 
   return (
     <Modal
       title={
         <h3>
           <b>
-            {t("general.docNumber")}: {showOrder?.docNum}
+            {t("general.docNumber")}: {showPurchase?.docNum}
           </b>
         </h3>
       }

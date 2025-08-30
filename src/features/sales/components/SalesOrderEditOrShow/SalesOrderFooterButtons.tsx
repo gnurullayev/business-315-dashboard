@@ -105,7 +105,7 @@ const SalesOrderFooterButtons = ({
         open={paymentModalFormOpen}
         setOpen={setPaymentModalFormOpen}
         setReload={() => null}
-        showOrder={showOrder}
+        showPurchase={showOrder}
         paymentSuccessShowFn={handleSuccess}
         purchasesOrSales="sales"
       />

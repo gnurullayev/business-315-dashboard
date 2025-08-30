@@ -139,6 +139,7 @@ const ClientModalForm: FC<IProps> = ({
               label={t("clients.phoneNumber")}
               layout="vertical"
               rules={[
+                { required: true, message: t("general.enterInformation") },
                 {
                   pattern: /^\+998\d{9}$/,
                   message: "Telefon raqam noto‘g‘ri (masalan: +998901234567)",
