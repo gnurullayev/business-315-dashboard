@@ -2,7 +2,7 @@ import Axios from "axios";
 import { dispatch, getState } from "../store";
 import { handleError } from "@/lib/apiErrorShow";
 
-export const BASE_URL = "https://master-shina-backend.bis-apps.com/";
+export const BASE_URL = "https://master-shina-test.bis-apps.com/";
 
 export const axiosInstance = Axios.create({
   baseURL: BASE_URL + "api/",
