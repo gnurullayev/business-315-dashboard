@@ -80,21 +80,22 @@ const PdfChequeInfo = () => {
                 <b>Тел :</b> 983004547
               </p>
               <p>
-                <b>Клиент :</b> {data && data[0].cardName}
+                <b>Клиент :</b> {data?.length && data[0].cardName}
               </p>
               <p>
-                <b>Продавец :</b> {data && data[0].slpName}
+                <b>Продавец :</b> {data?.length && data[0].slpName}
               </p>
             </div>
             <div className="right">
               <p>
                 <b>Курс :</b>{" "}
-                {!isNaN(currencyRate[0]?.rate)
+                {currencyRate?.length && !isNaN(currencyRate[0]?.rate)
                   ? Number(currencyRate[0]?.rate)
                   : ""}
               </p>
               <p>
-                <b>Дата :</b> {currencyRate[0]?.rateDate}
+                <b>Дата :</b>{" "}
+                {currencyRate?.length && currencyRate[0]?.rateDate}
               </p>
             </div>
           </div>
@@ -122,7 +123,7 @@ const PdfChequeInfo = () => {
           <div className="pdf-cheque-info-footer">
             <p>
               <b>Всего (UZS) :</b>{" "}
-              {!isNaN(currencyRate[0]?.rate)
+              {currencyRate?.length && !isNaN(currencyRate[0]?.rate)
                 ? (data as IOrder[])[0].docTotal * Number(currencyRate[0]?.rate)
                 : 0}
             </p>

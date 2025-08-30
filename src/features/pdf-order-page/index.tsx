@@ -95,7 +95,7 @@ const PdfOrderPageInfo: FC = () => {
             <div className="right">
               <p>
                 <b>Курс :</b>{" "}
-                {!isNaN(currencyRate[0]?.rate)
+                {currencyRate?.length && !isNaN(currencyRate[0]?.rate)
                   ? Number(currencyRate[0]?.rate)
                   : ""}
               </p>
@@ -103,7 +103,8 @@ const PdfOrderPageInfo: FC = () => {
                 <b>Check № :</b> {(data as IOrder[])[0].docNum}
               </p>
               <p>
-                <b>Sana :</b> {currencyRate[0]?.rateDate}
+                <b>Sana :</b>{" "}
+                {currencyRate?.length && currencyRate[0]?.rateDate}
               </p>
             </div>
           </div>

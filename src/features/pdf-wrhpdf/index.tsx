@@ -68,13 +68,13 @@ const PdfWrhPdfInfo = () => {
               </p>
               <p>
                 <b>Курс : </b>
-                {!isNaN(currencyRate[0]?.rate)
+                {currencyRate?.length && !isNaN(currencyRate[0]?.rate)
                   ? Number(currencyRate[0]?.rate)
                   : ""}
               </p>
               <p>
                 <b>Сана : </b>
-                {currencyRate[0]?.rateDate}
+                {currencyRate?.length && currencyRate[0]?.rateDate}
               </p>
             </div>
           </div>
