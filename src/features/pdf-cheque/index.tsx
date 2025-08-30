@@ -89,12 +89,12 @@ const PdfChequeInfo = () => {
             <div className="right">
               <p>
                 <b>Курс :</b>{" "}
-                {!isNaN(currencyRate[0].rate)
-                  ? Number(currencyRate[0].rate)
+                {!isNaN(currencyRate[0]?.rate)
+                  ? Number(currencyRate[0]?.rate)
                   : ""}
               </p>
               <p>
-                <b>Дата :</b> {currencyRate[0].rateDate}
+                <b>Дата :</b> {currencyRate[0]?.rateDate}
               </p>
             </div>
           </div>
@@ -122,8 +122,8 @@ const PdfChequeInfo = () => {
           <div className="pdf-cheque-info-footer">
             <p>
               <b>Всего (UZS) :</b>{" "}
-              {!isNaN(currencyRate[0].rate)
-                ? (data as IOrder[])[0].docTotal * Number(currencyRate[0].rate)
+              {!isNaN(currencyRate[0]?.rate)
+                ? (data as IOrder[])[0].docTotal * Number(currencyRate[0]?.rate)
                 : 0}
             </p>
             <p>
